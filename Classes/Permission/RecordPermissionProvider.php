@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Security\Permission;
  * The TYPO3 project - inspiring people to share!
  */
 
-class RecordPermissionProvider implements PersmissionProviderInterface
+class RecordPermissionProvider implements PermissionProviderInterface
 {
     /**
      * {@inheritdoc}
