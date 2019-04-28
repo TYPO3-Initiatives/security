@@ -17,22 +17,11 @@ use TYPO3\CMS\Security\Permission\NoPermissionEntryFoundException;
  * The TYPO3 project - inspiring people to share!
  */
 
-interface PermissionListInterface
+/**
+ * Interface used by permission list implementations.
+ */
+interface PermissionListInterface extends \IteratorAggregate
 {
-    /**
-     * Return all object based entries associated with this.
-     *
-     * @return array
-     */
-    public function getEntries(): array;
-
-    /**
-     * Return all object field based entries associated with this.
-     *
-     * @return array
-     */
-    public function getFieldEntries($field): array;
-
     /**
      * Return the object identity associated with this.
      *
@@ -52,7 +41,7 @@ interface PermissionListInterface
      *
      * @return bool
      */
-    public function isEntriesInheriting(): bool;
+    public function isInheriting(): bool;
 
     /**
      * Determines whether field access is granted.
@@ -60,19 +49,17 @@ interface PermissionListInterface
      * @param string $field
      * @param array $masks
      * @param SubjectIdentity[] $subjectIdentities
-     * @param bool $administrativeMode
      * @return bool
      */
-    public function isFieldGranted(string $field, array $masks, array $subjectIdentities, $administrativeMode = false): bool;
+    public function isFieldGranted(string $field, array $masks, array $subjectIdentities): bool;
 
     /**
      * Determines whether access is granted.
      *
      * @param array $masks
      * @param SubjectIdentity[] $subjectIdentities
-     * @param bool $administrativeMode
      * @return bool
      * @throws NoPermissionEntryFoundException when no entry was applicable for this request
      */
-    public function isGranted(array $masks, array $securityIdentities, $administrativeMode = false): bool;
+    public function isGranted(array $masks, array $subjectIdentities): bool;
 }

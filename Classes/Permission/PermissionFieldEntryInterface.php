@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Security\Permission;
  * The TYPO3 project - inspiring people to share!
  */
 
+ /**
+ * Interface used by permission field entry implementations.
+ */
 interface PermissionFieldEntryInterface extends PermissionEntryInterface
 {
     /**

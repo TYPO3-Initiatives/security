@@ -2,8 +2,6 @@
 declare(strict_types = 1);
 namespace TYPO3\CMS\Security\Permission;
 
-use TYPO3\CMS\Security\Permission\PermissionListNotFoundException;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,15 +15,14 @@ use TYPO3\CMS\Security\Permission\PermissionListNotFoundException;
  * The TYPO3 project - inspiring people to share!
  */
 
-interface PermissionProviderInterface
+class RecordPermissionProvider implements PersmissionProviderInterface
 {
     /**
-     * Returns the list that belongs to the given object identity.
-     *
-     * @param ObjectIdentityInterface $oid
-     * @param SubjectIdentityInterface[] $sids
-     * @return PermissionListInterface
-     * @throws PermissionListNotFoundException when there is no list
+     * {@inheritdoc}
      */
-    public function findList(ObjectIdentityInterface $objectIdentities, array $subjectIdentities = []): PermissionListInterface;
+    public function findList(ObjectIdentityInterface $objectIdentities, array $subjectIdentities = []): PermissionListInterface
+    {
+        // @todo
+        return new PermissionList($objectIdentities, new PermissionGrantingStrategy());
+    }
 }

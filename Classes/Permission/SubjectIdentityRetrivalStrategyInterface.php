@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 namespace TYPO3\CMS\Security\Permission;
 
-use TYPO3\CMS\Security\Permission\PermissionListNotFoundException;
+use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,15 +17,13 @@ use TYPO3\CMS\Security\Permission\PermissionListNotFoundException;
  * The TYPO3 project - inspiring people to share!
  */
 
-interface PermissionProviderInterface
+interface SubjectIdentityRetrivalStrategyInterface
 {
     /**
-     * Returns the list that belongs to the given object identity.
+     * Retrieves the available subject identities for the given authentication.
      *
-     * @param ObjectIdentityInterface $oid
-     * @param SubjectIdentityInterface[] $sids
-     * @return PermissionListInterface
-     * @throws PermissionListNotFoundException when there is no list
+     * @return SecurityIdentityInterface[]
+     * @todo Replace AbstractUserAuthentication with an interface (e.g. AccessTokenInterface)
      */
-    public function findList(ObjectIdentityInterface $objectIdentities, array $subjectIdentities = []): PermissionListInterface;
+    public function getSubjectIdentities(AbstractUserAuthentication $authentication): array;
 }

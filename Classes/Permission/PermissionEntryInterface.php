@@ -15,40 +15,43 @@ namespace TYPO3\CMS\Security\Permission;
  * The TYPO3 project - inspiring people to share!
  */
 
+ /**
+ * Interface used by permission entry implementations.
+ */
 interface PermissionEntryInterface
 {
     /**
-     * Return the list this is associated with.
-     *
-     * @return PermissionListInterface
-     */
-    public function getList(): PermissionListInterface;
-
-    /**
-     * Return the primary key of this.
-     *
-     * @return int
-     */
-    public function getId(): int;
-
-    /**
-     * Return the permission mask of this.
+     * Returns the permission mask of this.
      *
      * @return int
      */
     public function getMask(): int;
 
     /**
-     * Return the subject identity associated with this.
+     * Returns the subject identity associated with this.
      *
      * @return SubjectIdentityInterface
      */
     public function getSubjectIdentity(): SubjectIdentityInterface;
 
     /**
-     * Returnswhether this is granting, or denying.
+     * Returns whether this is granting, or denying.
      *
      * @return bool
      */
     public function isGranting(): bool;
+
+    /**
+     * Return the strategy for comparing masks.
+     *
+     * @return string
+     */
+    public function getStrategy(): string;
+
+    /**
+     * Returns the priority.
+     *
+     * @return int
+     */
+    public function getPriority(): int;
 }

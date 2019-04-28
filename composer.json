@@ -37,7 +37,7 @@
     },
     "autoload": {
         "psr-4": {
-            "TYPO3\\CMS\\Security\\": "Classes/Security/"
+            "TYPO3\\CMS\\Security\\": "Classes/"
         }
     },
     "autoload-dev": {
