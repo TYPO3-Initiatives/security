@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Core\Tests\Functional\GraphQL;
+namespace TYPO3\CMS\Security\Tests\Functional\Permission;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -74,5 +74,44 @@ class TablePermissionRetrivalStrategyTest extends FunctionalTestCase
             ->findList(new ObjectIdentity(sprintf('table/%s', $table)), $subjectIdentities);
 
         $this->assertEquals($granted, $permissionList->isGranted($masks, $subjectIdentities));
+    }
+
+    public function checkTableFieldPermissionsProvider()
+    {
+        return [
+            [2, true, [TablePermissionRetrivalStrategy::PERMISSION_READ], 'tt_content', 'header'],
+            [2, true, [TablePermissionRetrivalStrategy::PERMISSION_WRITE], 'pages', 'title'],
+            [2, false, [TablePermissionRetrivalStrategy::PERMISSION_READ, TablePermissionRetrivalStrategy::PERMISSION_WRITE], 'pages', 'editlock'],
+            [1, true, [TablePermissionRetrivalStrategy::PERMISSION_READ], 'be_users', 'admin'],
+            [1, true, [TablePermissionRetrivalStrategy::PERMISSION_WRITE], 'be_groups', 'workspace_perms'],
+            [1, true, [TablePermissionRetrivalStrategy::PERMISSION_READ, TablePermissionRetrivalStrategy::PERMISSION_WRITE], 'sys_file_reference', 'description'],
+            [3, true, [TablePermissionRetrivalStrategy::PERMISSION_READ], 'be_users', 'email'],
+            [3, false, [TablePermissionRetrivalStrategy::PERMISSION_READ], 'tt_content', 'colPos'],
+            [3, true, [TablePermissionRetrivalStrategy::PERMISSION_WRITE], 'pages', 'url'],
+            [3, false, [TablePermissionRetrivalStrategy::PERMISSION_WRITE], 'pages', 'slug'],
+            [3, true, [TablePermissionRetrivalStrategy::PERMISSION_WRITE, TablePermissionRetrivalStrategy::PERMISSION_READ], 'sys_language', 'title'],
+            [3, true, [TablePermissionRetrivalStrategy::PERMISSION_READ], 'pages', 'title'],
+            [3, true, [TablePermissionRetrivalStrategy::PERMISSION_READ], 'pages', 'slug'],
+            [3, true, [TablePermissionRetrivalStrategy::PERMISSION_WRITE], 'tt_content', 'header'],
+            [3, true, [TablePermissionRetrivalStrategy::PERMISSION_WRITE], 'tt_content', 'header_layout'],
+            [3, true, [TablePermissionRetrivalStrategy::PERMISSION_WRITE, TablePermissionRetrivalStrategy::PERMISSION_READ], 'tt_content', 'header'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider checkTableFieldPermissionsProvider
+     */
+    public function checkTableFieldPermissions(int $backendUser, bool $granted, array $masks, string $table, string $field)
+    {
+        $this->setUpBackendUserFromFixture($backendUser);
+
+        $subjectIdentities = GeneralUtility::makeInstance(SubjectIdentityProvider::class)
+            ->getSubjectIdentities($GLOBALS['BE_USER']);
+
+        $permissionList = GeneralUtility::makeInstance(PermissionProvider::class)
+            ->findList(new ObjectIdentity(sprintf('table/%s', $table)), $subjectIdentities);
+
+        $this->assertEquals($granted, $permissionList->isGranted($masks, $subjectIdentities, new ObjectIdentity(sprintf('table/%s/field/%s', $table, $field))));
     }
 }

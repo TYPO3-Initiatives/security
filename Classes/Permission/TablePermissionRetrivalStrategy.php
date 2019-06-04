@@ -120,7 +120,7 @@ class TablePermissionRetrivalStrategy implements PermissionRetrivalStrategyInter
                 self::PERMISSION_READ | self::PERMISSION_WRITE,
                 new BackendAdministratorIdentity(),
                 30,
-                PermissionGrantingStrategy::ANY
+                PermissionGrantingStrategy::ALL
             ));
 
             $permissionList->add(new PermissionFieldEntry(
@@ -128,14 +128,14 @@ class TablePermissionRetrivalStrategy implements PermissionRetrivalStrategyInter
                 self::PERMISSION_READ | self::PERMISSION_WRITE,
                 new BackendAdministratorIdentity(),
                 30,
-                PermissionGrantingStrategy::ANY
+                PermissionGrantingStrategy::ALL
             ));
 
             $permissionList->add(new PermissionEntry(
                 self::PERMISSION_READ | self::PERMISSION_WRITE,
                 new BackendAuthenticationIdentity(),
                 10,
-                PermissionGrantingStrategy::ANY,
+                PermissionGrantingStrategy::ALL,
                 false
             ));
 
@@ -152,7 +152,7 @@ class TablePermissionRetrivalStrategy implements PermissionRetrivalStrategyInter
                         self::PERMISSION_READ | self::PERMISSION_WRITE,
                         new BackendAuthenticationIdentity(),
                         20,
-                        PermissionGrantingStrategy::ANY,
+                        PermissionGrantingStrategy::ALL,
                         false
                     ));
                 }
@@ -163,14 +163,14 @@ class TablePermissionRetrivalStrategy implements PermissionRetrivalStrategyInter
                 self::PERMISSION_READ | self::PERMISSION_WRITE,
                 new BackendAuthenticationIdentity(),
                 10,
-                PermissionGrantingStrategy::ANY
+                PermissionGrantingStrategy::ALL
             ));
 
             $permissionList->add(new PermissionEntry(
                 self::PERMISSION_READ | self::PERMISSION_WRITE,
                 new AnyFrontendIdentity(),
                 10,
-                PermissionGrantingStrategy::ANY
+                PermissionGrantingStrategy::ALL
             ));
 
             $permissionList->add(new PermissionFieldEntry(
@@ -178,7 +178,7 @@ class TablePermissionRetrivalStrategy implements PermissionRetrivalStrategyInter
                 self::PERMISSION_READ | self::PERMISSION_WRITE,
                 new AnyFrontendIdentity(),
                 10,
-                PermissionGrantingStrategy::ANY
+                PermissionGrantingStrategy::ALL
             ));
 
             $this->cache->set($hash, $permissionList);
@@ -189,7 +189,7 @@ class TablePermissionRetrivalStrategy implements PermissionRetrivalStrategyInter
 
     protected function getTable(ObjectIdentityInterface $objectIdentity)
     {
-        $segments = explode('/', trim(parse_url($objectIdentity->getIdentifier(), \PHP_URL_PATH), '/'), 2);
+        $segments = explode('/', trim(parse_url($objectIdentity->getIdentifier(), \PHP_URL_PATH), '/'), 4);
 
         return $segments[1];
     }
@@ -234,7 +234,7 @@ class TablePermissionRetrivalStrategy implements PermissionRetrivalStrategyInter
 
                 foreach (array_filter(explode(',', $row['non_exclude_fields'])) as $field) {
                     list($table, $field) = explode(':', $field);
-                    $masks[$key][$table]['fields'][$field] = self::PERMISSION_READ | self::PERMISSION_WRITE;
+                    $masks[$key][$table]['fields'][$field] = $masks[$key][$table]['table'];
                 }
             }
 
