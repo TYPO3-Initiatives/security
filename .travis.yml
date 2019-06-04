@@ -28,3 +28,10 @@ script:
     echo;
     echo "Running unit tests";
     vendor/bin/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml Tests/Unit/
+  - >
+    echo;
+    echo "Running functional tests";
+    export typo3DatabaseName="typo3";
+    export typo3DatabaseHost="localhost";
+    export typo3DatabaseUsername="root";
+    vendor/bin/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml Tests/Functional/
