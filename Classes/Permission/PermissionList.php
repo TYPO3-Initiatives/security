@@ -48,8 +48,10 @@ class PermissionList implements MutablePermissionListInterface
      */
     public function remove(PermissionEntryInterface $entry)
     {
-        if (isset($this->entries[\spl_object_hash($entry)])) {
-            unset($this->entries[\spl_object_hash($entry)]);
+        $hash = \spl_object_hash($entry);
+
+        if (isset($this->entries[$hash])) {
+            unset($this->entries[$hash]);
         }
     }
 
@@ -58,18 +60,16 @@ class PermissionList implements MutablePermissionListInterface
      */
     public function getIterator()
     {
-        usort($this->entries, function($a, $b) {
+        $entries = $this->entries;
+
+        usort($entries, function($a, $b) {
             if ($a->getPriority() === $b->getPriority()) {
                 return 0;
             }
             return ($a->getPriority() > $b->getPriority()) ? -1 : 1;
         });
 
-        return (function() {
-            foreach($this->entries as $position => $entry) {
-                yield $position => $entry;
-            }
-        })();
+        return new \ArrayIterator($entries);
     }
 
     /**
@@ -107,17 +107,9 @@ class PermissionList implements MutablePermissionListInterface
     /**
      * {@inheritdoc}
      */
-    public function isFieldGranted(string $field, array $masks, array $subjectIdentities): bool
+    public function isGranted(array $masks, array $subjectIdentities, ?ObjectIdentity $fieldIdentity = null): bool
     {
-        return $this->permissionGrantingStrategy->isFieldGranted($this, $field, $masks, $subjectIdentities);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isGranted(array $masks, array $subjectIdentities): bool
-    {
-        return $this->permissionGrantingStrategy->isGranted($this, $masks, $subjectIdentities);
+        return $this->permissionGrantingStrategy->isGranted($this, $masks, $subjectIdentities, $fieldIdentity);
     }
 
     /**

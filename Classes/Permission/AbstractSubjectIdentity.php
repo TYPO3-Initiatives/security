@@ -15,10 +15,7 @@ namespace TYPO3\CMS\Security\Permission;
  * The TYPO3 project - inspiring people to share!
  */
 
- /**
-  * A basic object identity implementation.
-  */
-class ObjectIdentity implements ObjectIdentityInterface
+abstract class AbstractSubjectIdentity implements SubjectIdentityInterface
 {
     /**
      * @var string
@@ -34,28 +31,33 @@ class ObjectIdentity implements ObjectIdentityInterface
         if (empty($identifier)) {
             throw new \InvalidArgumentException('$identifier cannot be empty.');
         }
-
         $this->identifier = $identifier;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function equals(ObjectIdentityInterface $identity): bool
+    public function equals(SubjectIdentityInterface $identity): bool
     {
+        if (!$identity instanceof self) {
+            return false;
+        }
+
         return $this->identifier === $identity->getIdentifier();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIdentifier(): string
+     /**
+      * Returns the identifier.
+      *
+      * @return string
+      */
+    public function getIdentifier()
     {
         return $this->identifier;
     }
 
     public function __toString()
     {
-        return sprintf('t3:/security/permission/object/%s', $this->identifier);
+        return sprintf('t3:/security/permission/subject/%s', $this->identifier);
     }
 }

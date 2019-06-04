@@ -15,30 +15,14 @@ namespace TYPO3\CMS\Security\Permission;
  * The TYPO3 project - inspiring people to share!
  */
 
-class UserIdentity implements SubjectIdentityInterface
+class AnyFrontendIdentity extends AbstractSubjectIdentity
 {
-    private $name;
-
     /**
-     * @param string $name
-     * @throws \InvalidArgumentException
+     * {@inheritdoc}
      */
-    public function __construct(string $name)
+    public function __construct()
     {
-        if (empty($name)) {
-            throw new \InvalidArgumentException('$name must not be empty.');
-        }
-        $this->name = $name;
-    }
-
-    /**
-     * Returns the name.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
+        parent::__construct('frontend/everyone');
     }
 
     /**
@@ -46,10 +30,6 @@ class UserIdentity implements SubjectIdentityInterface
      */
     public function equals(SubjectIdentityInterface $identity): bool
     {
-        if (!$identity instanceof self) {
-            return false;
-        }
-
-        return $this->name === $identity->getName();
+        return $identity instanceof self;
     }
 }

@@ -20,8 +20,8 @@ use TYPO3\CMS\Security\Permission\PermissionList;
 use TYPO3\CMS\Security\Permission\ObjectIdentity;
 use TYPO3\CMS\Security\Permission\PermissionGrantingStrategy;
 use TYPO3\CMS\Security\Permission\PermissionEntry;
-use TYPO3\CMS\Security\Permission\UserIdentity;
-use TYPO3\CMS\Security\Permission\GroupIdentity;
+use TYPO3\CMS\Security\Permission\BackendUserIdentity;
+use TYPO3\CMS\Security\Permission\BackendGroupIdentity;
 use TYPO3\CMS\Security\Permission\Exception\NoPermissionEntryFoundException;
 
 /**
@@ -35,7 +35,7 @@ class PermissionGrantingStrategyTest extends UnitTestCase
     public function isGrantedFavorsLocalEntriesOverParentEntries()
     {
         $strategy = new PermissionGrantingStrategy();
-        $subjectIdentity = new UserIdentity('foo');
+        $subjectIdentity = new BackendUserIdentity(1);
 
         $permissionList = new PermissionList(new ObjectIdentity('bar'), $strategy);
         $permissionList->add(new PermissionEntry(1, $subjectIdentity, 1, PermissionGrantingStrategy::ALL, true));
@@ -52,8 +52,8 @@ class PermissionGrantingStrategyTest extends UnitTestCase
     public function isGrantedFallsBackToParentEntriesIfNoLocalEntriesAreApplicable()
     {
         $strategy = new PermissionGrantingStrategy();
-        $subjectIdentity = new UserIdentity('foo');
-        $anotherSubjectIdentity = new UserIdentity('bar');
+        $subjectIdentity = new BackendUserIdentity(1);
+        $anotherSubjectIdentity = new BackendUserIdentity(2);
 
         $permissionList = new PermissionList(new ObjectIdentity('bar'), $strategy, true);
         $permissionList->add(new PermissionEntry(1, $anotherSubjectIdentity, 1, PermissionGrantingStrategy::ALL, true));
@@ -72,7 +72,7 @@ class PermissionGrantingStrategyTest extends UnitTestCase
         $this->expectException(NoPermissionEntryFoundException::class);
 
         $strategy = new PermissionGrantingStrategy();
-        $subjectIdentity = new UserIdentity('foo');
+        $subjectIdentity = new BackendUserIdentity(1);
 
         $permissionList = new PermissionList(new ObjectIdentity('bar'), $strategy);
 
@@ -85,8 +85,8 @@ class PermissionGrantingStrategyTest extends UnitTestCase
     public function isGrantedUsesFirstApplicableEntryToMakeUltimateDecisionForPermissionIdentityCombination()
     {
         $strategy = new PermissionGrantingStrategy();
-        $subjectIdentity = new UserIdentity('foo');
-        $anotherSubjectIdentity = new GroupIdentity('bar');
+        $subjectIdentity = new BackendUserIdentity(1);
+        $anotherSubjectIdentity = new BackendGroupIdentity(1);
 
         $permissionList = new PermissionList(new ObjectIdentity('bar'), $strategy);
 
@@ -104,7 +104,7 @@ class PermissionGrantingStrategyTest extends UnitTestCase
     public function isGrantedSupportsDifferentStrategies($maskStrategy, $mask, $requiredMask, $result)
     {
         $strategy = new PermissionGrantingStrategy();
-        $subjectIdentity = new UserIdentity('foo');
+        $subjectIdentity = new BackendUserIdentity(1);
 
         $permissionList = new PermissionList(new ObjectIdentity('bar'), $strategy);
 

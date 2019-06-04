@@ -20,7 +20,7 @@ use TYPO3\CMS\Security\Permission\PermissionList;
 use TYPO3\CMS\Security\Permission\ObjectIdentity;
 use TYPO3\CMS\Security\Permission\PermissionGrantingStrategy;
 use TYPO3\CMS\Security\Permission\PermissionEntry;
-use TYPO3\CMS\Security\Permission\UserIdentity;
+use TYPO3\CMS\Security\Permission\BackendUserIdentity;
 
 /**
  * Testcase for the TYPO3\CMS\Security\Permission\PermissionGrantingStrategy
@@ -33,7 +33,7 @@ class PermissionListTest extends UnitTestCase
     public function getIteratorSupportsAdd()
     {
         $strategy = new PermissionGrantingStrategy();
-        $subjectIdentity = new UserIdentity('foo');
+        $subjectIdentity = new BackendUserIdentity(1);
 
         $firstEntry = new PermissionEntry(1, $subjectIdentity, 3);
         $secondEntry = new PermissionEntry(1, $subjectIdentity, 2);
@@ -54,7 +54,7 @@ class PermissionListTest extends UnitTestCase
     public function getIteratorSupportsRemove()
     {
         $strategy = new PermissionGrantingStrategy();
-        $subjectIdentity = new UserIdentity('foo');
+        $subjectIdentity = new BackendUserIdentity(1);
 
         $firstEntry = new PermissionEntry(1, $subjectIdentity, 100);
         $secondEntry = new PermissionEntry(1, $subjectIdentity, 10);
@@ -77,7 +77,7 @@ class PermissionListTest extends UnitTestCase
     public function getIteratorRespectsEntryPriority()
     {
         $strategy = new PermissionGrantingStrategy();
-        $subjectIdentity = new UserIdentity('foo');
+        $subjectIdentity = new BackendUserIdentity(1);
 
         $firstEntry = new PermissionEntry(1, $subjectIdentity, -1);
         $secondEntry = new PermissionEntry(1, $subjectIdentity, -10);

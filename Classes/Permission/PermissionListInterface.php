@@ -44,22 +44,13 @@ interface PermissionListInterface extends \IteratorAggregate
     public function isInheriting(): bool;
 
     /**
-     * Determines whether field access is granted.
-     *
-     * @param string $field
-     * @param array $masks
-     * @param SubjectIdentity[] $subjectIdentities
-     * @return bool
-     */
-    public function isFieldGranted(string $field, array $masks, array $subjectIdentities): bool;
-
-    /**
      * Determines whether access is granted.
      *
      * @param array $masks
      * @param SubjectIdentity[] $subjectIdentities
+     * @param ObjectIdentity $fieldIdentity
      * @return bool
      * @throws NoPermissionEntryFoundException when no entry was applicable for this request
      */
-    public function isGranted(array $masks, array $subjectIdentities): bool;
+    public function isGranted(array $masks, array $subjectIdentities, ?ObjectIdentity $fieldIdentity = null): bool;
 }

@@ -36,45 +36,22 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
     const ALL = 'all';
 
     /**
-     * The ACE will be considered applicable when the bitmasks are equal.
+     * The entry will be considered applicable when the bitmasks are equal.
      */
     const ANY = 'any';
 
     /**
      * {@inheritdoc}
      */
-    public function isGranted(PermissionListInterface $list, array $masks, array $subjectIdentities): bool
+    public function isGranted(PermissionListInterface $list, array $masks, array $subjectIdentities, ?ObjectIdentity $fieldIdentity = null): bool
     {
         while ($list) {
             try {
-                $entries = new class(new \IteratorIterator($list)) extends \FilterIterator {
-                    public function accept() {
-                        return !($this->getInnerIterator()->current() instanceof PermissionFieldEntryInterface);
-                    }
-                };
-                return $this->hasSufficientPermissions($entries, $masks, $subjectIdentities);
-            } catch (NoPermissionEntryFoundException $e) {
-                if (!$list->isInheriting() || $list->getParent() === null) {
-                    throw $e;
-                }
-                $list = $list->getParent();
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isFieldGranted(PermissionListInterface $list, string $field, array $masks, array $subjectIdentities): bool
-    {
-        while ($list) {
-            try {
-                $entries = new class(new \IteratorIterator($list)) extends \FilterIterator {
-                    public function accept() {
-                        return $this->getInnerIterator()->current() instanceof PermissionFieldEntryInterface;
-                    }
-                };
-                return $this->hasSufficientPermissions($entries, $masks, $subjectIdentities);
+                return $this->hasSufficientPermissions(
+                    new PermissionListFilterIterator(new \IteratorIterator($list), $fieldIdentity),
+                    $masks,
+                    $subjectIdentities
+                );
             } catch (NoPermissionEntryFoundException $e) {
                 if (!$list->isInheriting() || $list->getParent() === null) {
                     throw $e;
@@ -97,10 +74,10 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
     {
         $firstRejectedEntry = null;
 
-        foreach ($masks as $requiredMask) {
+        foreach ($masks as $mask) {
             foreach ($subjectIdentities as $subjectIdentity) {
                 foreach ($entries as $entry) {
-                    if ($subjectIdentity->equals($entry->getSubjectIdentity()) && $this->isEntryApplicable((int)$requiredMask, $entry)) {
+                    if ($entry->getSubjectIdentity()->equals($subjectIdentity) && $this->isEntryApplicable((int)$mask, $entry)) {
                         if ($entry->isGranting()) {
                             return true;
                         }

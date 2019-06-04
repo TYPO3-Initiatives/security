@@ -18,9 +18,9 @@ namespace TYPO3\CMS\Security\Permission;
 interface MutablePermissionFieldEntryInterface extends MutablePermissionEntryInterface, PermissionFieldEntryInterface
 {
     /**
-     * Sets the permission field of this.
+     * Sets the permission field identity of this.
      *
-     * @param int $mask
+     * @param ObjectIdentityInterface $fieldIdentity
      */
-    public function setField(string $field);
+    public function setFieldIdentity(ObjectIdentityInterface $fieldIdentity);
 }

@@ -1,6 +1,8 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Security\Permission;
+namespace TYPO3\CMS\Security\Permission\Exception;
+
+use TYPO3\CMS\Core\Exception;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,15 +17,6 @@ namespace TYPO3\CMS\Security\Permission;
  * The TYPO3 project - inspiring people to share!
  */
 
- /**
- * Interface used by permission field entry implementations.
- */
-interface PermissionFieldEntryInterface extends PermissionEntryInterface
+class NotSupportedException extends Exception
 {
-    /**
-     * Returns the field identity used for this.
-     *
-     * @return ObjectIdentityInterface
-     */
-    public function getFieldIdentity(): ObjectIdentityInterface;
 }

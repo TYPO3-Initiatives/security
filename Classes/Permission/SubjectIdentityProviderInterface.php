@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace TYPO3\CMS\Security\Permission;
 
+use TYPO3\CMS\Security\Permission\PermissionListNotFoundException;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 
 /*
@@ -17,14 +18,13 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
  * The TYPO3 project - inspiring people to share!
  */
 
- class SubjectIdentityRetrivalStrategy implements SubjectIdentityRetrivalStrategyInterface
- {
+interface SubjectIdentityProviderInterface
+{
     /**
-     * {@inheritdoc}
+     * Returns the list of subject identites that belongs to the given authentication.
+     *
+     * @param AbstractUserAuthentication $authentication
+     * @return SubjectIdentityInterface[]
      */
-    public function getSubjectIdentities(AbstractUserAuthentication $authentication): array
-    {
-        // @todo
-        return [];
-    }
- }
+    public function getSubjectIdentities(AbstractUserAuthentication $authentication): array;
+}

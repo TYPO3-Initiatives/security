@@ -20,33 +20,36 @@ namespace TYPO3\CMS\Security\Permission;
  */
 class PermissionFieldEntry extends PermissionEntry implements MutablePermissionFieldEntryInterface
 {
-    private $field;
+    /**
+     * @var ObjectIdentityInterface
+    */
+    private $fieldIdentity;
 
     /**
      * @param int $mask
      * @param SubjectIdentityInterface $permissionGrantingStrategy
      * @param bool $granting
      */
-    public function __construct(string $field, int $mask, SubjectIdentityInterface $subjectIdentity, int $priority, string $strategy = PermissionGrantingStrategy::ALL, bool $granting = true)
+    public function __construct(ObjectIdentityInterface $fieldIdentity, int $mask, SubjectIdentityInterface $subjectIdentity, int $priority = 1, string $strategy = PermissionGrantingStrategy::ALL, bool $granting = true)
     {
         parent::__construct($mask, $subjectIdentity, $priority, $strategy, $granting);
 
-        $this->field = $field;
+        $this->fieldIdentity = $fieldIdentity;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getField(): string
+    public function getFieldIdentity(): ObjectIdentityInterface
     {
-        return $this->field;
+        return $this->fieldIdentity;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setField(string $field)
+    public function setFieldIdentity(ObjectIdentityInterface $fieldIdentity)
     {
-        return $this->field = $field;
+        return $this->fieldIdentity = $fieldIdentity;
     }
 }

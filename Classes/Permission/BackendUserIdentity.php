@@ -15,14 +15,28 @@ namespace TYPO3\CMS\Security\Permission;
  * The TYPO3 project - inspiring people to share!
  */
 
-class RecordPermissionProvider implements PermissionProviderInterface
+class BackendUserIdentity extends AbstractSubjectIdentity
 {
+    /**
+     * @var int
+     */
+    protected $uid;
+
     /**
      * {@inheritdoc}
      */
-    public function findList(ObjectIdentityInterface $objectIdentities, array $subjectIdentities = []): PermissionListInterface
+    public function __construct(int $uid)
     {
-        // @todo
-        return new PermissionList($objectIdentities, new PermissionGrantingStrategy());
+        parent::__construct(sprintf('backend/user?uid=%d', $uid));
+
+        $this->uid = $uid;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUid(): int
+    {
+        return $this->uid;
     }
 }

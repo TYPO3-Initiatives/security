@@ -15,14 +15,21 @@ namespace TYPO3\CMS\Security\Permission;
  * The TYPO3 project - inspiring people to share!
  */
 
-class TablePermissionProvider implements PermissionProviderInterface
+ /**
+  * Any object identity implementation.
+  */
+class AnyObjectIdentity extends ObjectIdentity
 {
+    public function __construct()
+    {
+        parent::__construct('anything');
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function findList(ObjectIdentityInterface $objectIdentities, array $subjectIdentities = []): PermissionListInterface
+    public function equals(ObjectIdentityInterface $identity): bool
     {
-        // @todo
-        return new PermissionList($objectIdentities, new PermissionGrantingStrategy());
+        return true;
     }
 }

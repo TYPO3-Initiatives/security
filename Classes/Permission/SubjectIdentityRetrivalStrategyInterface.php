@@ -20,10 +20,18 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 interface SubjectIdentityRetrivalStrategyInterface
 {
     /**
+     * Whether this is able to retrive subject identities for the given authentication or not.
+     *
+     * @param AbstractUserAuthentication $authentication
+     * @return bool
+     */
+    public function canRetrive(AbstractUserAuthentication $authentication): bool;
+
+    /**
      * Retrieves the available subject identities for the given authentication.
      *
-     * @return SecurityIdentityInterface[]
-     * @todo Replace AbstractUserAuthentication with an interface (e.g. AccessTokenInterface)
+     * @return SubjectIdentityInterface[]
+     * @todo Replace AbstractUserAuthentication with an interface (e.g. Symfony TokenInterface)
      */
-    public function getSubjectIdentities(AbstractUserAuthentication $authentication): array;
+    public function retrive(AbstractUserAuthentication $authentication): array;
 }

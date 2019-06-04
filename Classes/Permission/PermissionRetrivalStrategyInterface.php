@@ -17,8 +17,16 @@ use TYPO3\CMS\Security\Permission\PermissionListNotFoundException;
  * The TYPO3 project - inspiring people to share!
  */
 
-interface PermissionProviderInterface
+interface PermissionRetrivalStrategyInterface
 {
+    /**
+     * Whether this is able to find a permission list for the given object identity or not.
+     *
+     * @param ObjectIdentityInterface $objectIdentity
+     * @return bool
+     */
+    public function canRetrive(ObjectIdentityInterface $objectIdentity): bool;
+
     /**
      * Returns the list that belongs to the given object identity.
      *
@@ -27,5 +35,5 @@ interface PermissionProviderInterface
      * @return PermissionListInterface
      * @throws PermissionListNotFoundException when there is no list
      */
-    public function findList(ObjectIdentityInterface $objectIdentity, array $subjectIdentities = []): PermissionListInterface;
+    public function retrive(ObjectIdentityInterface $objectIdentity, array $subjectIdentities = []): PermissionListInterface;
 }

@@ -15,18 +15,21 @@ namespace TYPO3\CMS\Security\Permission;
  * The TYPO3 project - inspiring people to share!
  */
 
-/**
- * Interface used by permission granting implementations.
- */
-interface PermissionGrantingStrategyInterface
+class BackendAdministratorIdentity extends AbstractSubjectIdentity
 {
     /**
-     * Determines whether access to a domain object is to be granted.
-     *
-     * @param PermissionListInterface $list
-     * @param array $masks
-     * @param array $subjectIdentities
-     * @return bool
+     * {@inheritdoc}
      */
-    public function isGranted(PermissionListInterface $list, array $masks, array $subjectIdentities, ?ObjectIdentity $fieldIdentity = null): bool;
+    public function __construct()
+    {
+        parent::__construct('backend/administrator');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function equals(SubjectIdentityInterface $identity): bool
+    {
+        return $identity instanceof self;
+    }
 }
