@@ -21,19 +21,31 @@ use TYPO3\CMS\Security\Permission\ObjectIdentity;
 use TYPO3\CMS\Security\Permission\PermissionGrantingStrategy;
 use TYPO3\CMS\Security\Permission\PermissionEntry;
 use TYPO3\CMS\Security\Permission\BackendUserIdentity;
+use TYPO3\CMS\Security\Permission\AbstractSubjectIdentity;
 
 /**
  * Testcase for the TYPO3\CMS\Security\Permission\PermissionGrantingStrategy
  */
 class PermissionListTest extends UnitTestCase
 {
+    protected $subjectIdentityFactory;
+
+    protected function setUp(): void
+    {
+        $this->subjectIdentityFactory = new class('mock') extends AbstractSubjectIdentity {
+            public static function create(string $identifer) {
+                return new self($identifer);
+            }
+        };
+    }
+
     /**
      * @test
      */
     public function getIteratorSupportsAdd()
     {
         $strategy = new PermissionGrantingStrategy();
-        $subjectIdentity = new BackendUserIdentity(1);
+        $subjectIdentity = $this->subjectIdentityFactory::create('foo');
 
         $firstEntry = new PermissionEntry(1, $subjectIdentity, 3);
         $secondEntry = new PermissionEntry(1, $subjectIdentity, 2);
@@ -54,7 +66,7 @@ class PermissionListTest extends UnitTestCase
     public function getIteratorSupportsRemove()
     {
         $strategy = new PermissionGrantingStrategy();
-        $subjectIdentity = new BackendUserIdentity(1);
+        $subjectIdentity = $this->subjectIdentityFactory::create('foo');
 
         $firstEntry = new PermissionEntry(1, $subjectIdentity, 100);
         $secondEntry = new PermissionEntry(1, $subjectIdentity, 10);
@@ -77,7 +89,7 @@ class PermissionListTest extends UnitTestCase
     public function getIteratorRespectsEntryPriority()
     {
         $strategy = new PermissionGrantingStrategy();
-        $subjectIdentity = new BackendUserIdentity(1);
+        $subjectIdentity = $this->subjectIdentityFactory::create('foo');
 
         $firstEntry = new PermissionEntry(1, $subjectIdentity, -1);
         $secondEntry = new PermissionEntry(1, $subjectIdentity, -10);
