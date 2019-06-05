@@ -42,7 +42,7 @@ You can use the following `composer.json` if you want to contribute:
 
 ## Permission API
 
-The permission API supports [access-control lists](https://en.wikipedia.org/wiki/Access-control_list) (ACL). Thus you have always a *object* and a *subject*. Each object has an access-control list which you can use use to check if a subject has the right to access the object.
+The permission API supports [access-control lists](https://en.wikipedia.org/wiki/Access-control_list) (ACL). Thus you have always an *object* and a *subject*. Each object has an access-control list which you can use use to check if a subject has the right to access the object.
 
 To do so you have to retrive all subject identities and the access-control list of a specific object. How to do that for a backend user and a table is shown by the following example:
 
