@@ -15,31 +15,6 @@ composer config repositories.security git https://github.com/typo3-initiatives/s
 composer require typo3/cms-security
 ```
 
-## Development
-
-You can use the following `composer.json` if you want to contribute:
-
-```json
-{
-    "name": "typo3/security",
-    "type": "project",
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/typo3-initiatives/security"
-        }
-    ],
-    "require": {
-        "typo3/cms-security": "10.0.*@dev"
-    },
-    "require-dev": {
-        "typo3/testing-framework": "^5.0"
-    },
-    "prefer-stable": true,
-    "minimum-stability": "dev"
-}
-```
-
 ## Permission API
 
 The permission API supports [access-control lists](https://en.wikipedia.org/wiki/Access-control_list) (ACL). Thus you have always an *object* and a *subject*. Each object has an access-control list which you can use use to check if a subject has the right to access the object.
@@ -140,4 +115,29 @@ Your custom retrival strategy will be available when it's registered in your `ex
 ```php
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['security']['permissionRetrival'][] 
     = \Vendor\CustomPermissionRetrivalStrategy::class;
+```
+
+## Contribute
+
+You can use the following `composer.json` if you want to contribute:
+
+```json
+{
+    "name": "typo3/security",
+    "type": "project",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/typo3-initiatives/security"
+        }
+    ],
+    "require": {
+        "typo3/cms-security": "10.0.*@dev"
+    },
+    "require-dev": {
+        "typo3/testing-framework": "^5.0"
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
+}
 ```
