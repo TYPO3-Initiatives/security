@@ -47,6 +47,7 @@ The permission API supports [access-control lists](https://en.wikipedia.org/wiki
 To do so you have to retrive all subject identities and the access-control list of a specific object. How to do that for a backend user and a table is shown by the following example:
 
 ```php
+use TYPO3\CMS\Backend\Permission\TablePermissionRetrivalStrategy;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Security\Permission\ObjectIdentity;
 use TYPO3\CMS\Security\Permission\PermissionProvider;
@@ -58,7 +59,7 @@ $subjectIdentities = GeneralUtility::makeInstance(SubjectIdentityProvider::class
 $permissionList = GeneralUtility::makeInstance(PermissionProvider::class)
     ->findList(new ObjectIdentity('table/pages')), $subjectIdentities);
 
-if ($permissionList->isGranted($masks, $subjectIdentities))) {
+if ($permissionList->isGranted([TablePermissionRetrivalStrategy::PERMISSION_READ], $subjectIdentities))) {
     // access is granted [...]
 } else {
    // access is denied [...]
