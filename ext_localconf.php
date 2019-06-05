@@ -3,10 +3,10 @@ defined('TYPO3_MODE') or die();
 
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['security'] = [
     'identityRetrival' => [
-        \TYPO3\CMS\Security\Permission\BackendIdentityRetrivalStrategy::class
+        \TYPO3\CMS\Backend\Permission\BackendIdentityRetrivalStrategy::class
     ],
     'permissionRetrival' => [
-        \TYPO3\CMS\Security\Permission\TablePermissionRetrivalStrategy::class,
+        \TYPO3\CMS\Backend\Permission\TablePermissionRetrivalStrategy::class,
     ],
 ];
 

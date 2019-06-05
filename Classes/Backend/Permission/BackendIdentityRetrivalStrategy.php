@@ -1,9 +1,10 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Security\Permission;
+namespace TYPO3\CMS\Backend\Permission;
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Security\Permission\SubjectIdentityRetrivalStrategyInterface;
 use Webmozart\Assert\Assert;
 
 /*

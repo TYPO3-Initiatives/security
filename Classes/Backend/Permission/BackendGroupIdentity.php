@@ -1,6 +1,8 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Security\Permission;
+namespace TYPO3\CMS\Backend\Permission;
+
+use TYPO3\CMS\Security\Permission\AbstractSubjectIdentity;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,21 +17,28 @@ namespace TYPO3\CMS\Security\Permission;
  * The TYPO3 project - inspiring people to share!
  */
 
-class AnyFrontendIdentity extends AbstractSubjectIdentity
+class BackendGroupIdentity extends AbstractSubjectIdentity
 {
     /**
-     * {@inheritdoc}
+     * @var int
      */
-    public function __construct()
-    {
-        parent::__construct('frontend/everyone');
-    }
+    protected $uid;
 
     /**
      * {@inheritdoc}
      */
-    public function equals(SubjectIdentityInterface $identity): bool
+    public function __construct(int $uid)
     {
-        return $identity instanceof self;
+        parent::__construct(sprintf('backend/group?uid=%d', $uid));
+
+        $this->uid = $uid;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUid(): int
+    {
+        return $this->uid;
     }
 }

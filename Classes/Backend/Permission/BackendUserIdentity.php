@@ -1,6 +1,8 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Security\Permission;
+namespace TYPO3\CMS\Backend\Permission;
+
+use TYPO3\CMS\Security\Permission\AbstractSubjectIdentity;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,7 +17,7 @@ namespace TYPO3\CMS\Security\Permission;
  * The TYPO3 project - inspiring people to share!
  */
 
-class BackendGroupIdentity extends AbstractSubjectIdentity
+class BackendUserIdentity extends AbstractSubjectIdentity
 {
     /**
      * @var int
@@ -27,7 +29,7 @@ class BackendGroupIdentity extends AbstractSubjectIdentity
      */
     public function __construct(int $uid)
     {
-        parent::__construct(sprintf('backend/group?uid=%d', $uid));
+        parent::__construct(sprintf('backend/user?uid=%d', $uid));
 
         $this->uid = $uid;
     }

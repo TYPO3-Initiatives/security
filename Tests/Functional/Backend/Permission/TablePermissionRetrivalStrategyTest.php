@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Security\Tests\Functional\Permission;
+namespace TYPO3\CMS\Backend\Tests\Functional\Permission;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,12 +15,12 @@ namespace TYPO3\CMS\Security\Tests\Functional\Permission;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
-use TYPO3\CMS\Security\Permission\SubjectIdentityProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Permission\TablePermissionRetrivalStrategy;
+use TYPO3\CMS\Security\Permission\SubjectIdentityProvider;
 use TYPO3\CMS\Security\Permission\PermissionProvider;
 use TYPO3\CMS\Security\Permission\ObjectIdentity;
-use TYPO3\CMS\Security\Permission\TablePermissionRetrivalStrategy;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case
@@ -34,7 +34,7 @@ class TablePermissionRetrivalStrategyTest extends FunctionalTestCase
         'typo3/sysext/security'
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

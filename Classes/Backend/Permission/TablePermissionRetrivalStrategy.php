@@ -1,11 +1,20 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Security\Permission;
+namespace TYPO3\CMS\Backend\Permission;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\MetaModel\EntityRelationMapFactory;
+use TYPO3\CMS\Security\Permission\AnyObjectIdentity;
+use TYPO3\CMS\Security\Permission\ObjectIdentity;
+use TYPO3\CMS\Security\Permission\ObjectIdentityInterface;
+use TYPO3\CMS\Security\Permission\PermissionEntry;
+use TYPO3\CMS\Security\Permission\PermissionFieldEntry;
+use TYPO3\CMS\Security\Permission\PermissionGrantingStrategy;
+use TYPO3\CMS\Security\Permission\PermissionList;
+use TYPO3\CMS\Security\Permission\PermissionListInterface;
+use TYPO3\CMS\Security\Permission\PermissionRetrivalStrategyInterface;
 use Webmozart\Assert\Assert;
 
 /*
@@ -162,21 +171,6 @@ class TablePermissionRetrivalStrategy implements PermissionRetrivalStrategyInter
                 new AnyObjectIdentity(),
                 self::PERMISSION_READ | self::PERMISSION_WRITE,
                 new BackendAuthenticationIdentity(),
-                10,
-                PermissionGrantingStrategy::ALL
-            ));
-
-            $permissionList->add(new PermissionEntry(
-                self::PERMISSION_READ | self::PERMISSION_WRITE,
-                new AnyFrontendIdentity(),
-                10,
-                PermissionGrantingStrategy::ALL
-            ));
-
-            $permissionList->add(new PermissionFieldEntry(
-                new AnyObjectIdentity(),
-                self::PERMISSION_READ | self::PERMISSION_WRITE,
-                new AnyFrontendIdentity(),
                 10,
                 PermissionGrantingStrategy::ALL
             ));
