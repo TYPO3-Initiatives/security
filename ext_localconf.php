@@ -1,15 +1,20 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['security'] = [
-    'identityRetrival' => [
-        \TYPO3\CMS\Backend\Permission\BackendIdentityRetrivalStrategy::class
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['security'] = [
+    'frontend' => \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class,
+    'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
+    'options' => [
+        'defaultLifetime' => 0,
     ],
-    'permissionRetrival' => [
-        \TYPO3\CMS\Backend\Permission\TablePermissionRetrivalStrategy::class,
-    ],
+    'groups' => ['system']
 ];
 
-if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['security_permission'])) {
-    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['security_permission'] = [];
-}
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['security'] = [
+    'permissionEvaluator' => [
+        \TYPO3\CMS\Backend\Policy\ExpressionLanguage\PermissionEvaluator::class,
+    ],
+    'principalProvider' => [
+        \TYPO3\CMS\Backend\Policy\ExpressionLanguage\PrincipalProvider::class,
+    ],
+];

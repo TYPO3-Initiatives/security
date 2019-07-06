@@ -2,7 +2,7 @@
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TYPO3 Security',
     'description' => 'The security library of TYPO3.',
-    'category' => 'be',
+    'category' => 'misc',
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',
     'author_company' => '',

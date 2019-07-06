@@ -14,9 +14,7 @@
     },
     "require": {
         "typo3/cms-core": "10.0.*@dev",
-        "typo3/cms-backend": "10.0.*@dev",
-        "typo3/cms-frontend": "10.0.*@dev",
-        "typo3/cms-configuration": "10.0.*@dev",
+        "typo3/cms-extbase": "10.0.*@dev",
         "webmozart/assert": "^1.0"
     },
     "require-dev": {
@@ -41,14 +39,14 @@
     },
     "autoload": {
         "psr-4": {
-            "TYPO3\\CMS\\Security\\Permission\\": "Classes/Permission/",
-            "TYPO3\\CMS\\Backend\\Permission\\": "Classes/Backend/Permission/"
+            "TYPO3\\CMS\\Backend\\Policy\\": "Classes/Backend/Policy",
+            "TYPO3\\CMS\\Core\\Policy\\": "Classes/Core/Policy",
+            "TYPO3\\CMS\\Security\\Policy\\": "Classes/Policy"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "TYPO3\\CMS\\Security\\Tests\\Unit\\": "Tests/Unit/",
-            "TYPO3\\CMS\\Backend\\Tests\\Functional\\Permission\\": "Tests/Functional/Backend/Permission/"
+            "TYPO3\\CMS\\Security\\Tests\\": "Tests/"
         }
     }
 }

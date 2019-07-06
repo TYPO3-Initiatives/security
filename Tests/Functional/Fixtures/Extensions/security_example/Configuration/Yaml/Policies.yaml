@@ -1,0 +1,35 @@
+TYPO3:
+  CMS:
+    Policy:
+      policies:
+        Admin:
+          target: 'hasAuthority("backend.role", "ADMIN")'
+          description: 'Administrator role policy.'
+          priority: 100
+          rules:
+            -
+              effect: permit
+        Backend:
+          target: 'constant("TYPO3_MODE") == "BE"'
+          description: 'Backend policy set.'
+          priority: 50
+          algorithm: permitOverrides
+          policies:
+            Database:
+              target: 'resource.type in ["core.entity", "core.property"]'
+              description: 'Backend database access policy.'
+              algorithm: denyOverrides
+              rules:
+                -
+                  condition: 'not hasPermission(resource, action)'
+                  effect: deny
+                -
+                  effect: permit
+            Default:
+              description: 'Backend fallback policy.'
+              priority: 25
+              rules:
+                -
+                  obligation:
+                    deny:
+                      Feedback: ['Access denied.']
