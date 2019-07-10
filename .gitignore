@@ -1,0 +1,9 @@
+.idea
+composer.lock
+.vscode
+.DS_Store
+.ddev
+
+public
+vendor
+.build
