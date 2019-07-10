@@ -5,8 +5,7 @@
     "homepage": "https://typo3.org",
     "license": ["GPL-2.0-or-later"],
     "authors": [{
-        "name": "TYPO3 Core Team",
-        "email": "typo3cms@typo3.org",
+        "name": "Artus Kolanowski",
         "role": "Developer"
     }],
     "config": {
