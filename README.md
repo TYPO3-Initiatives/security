@@ -175,3 +175,7 @@ class PolicyDecisionSlot
   }
 }
 ```
+
+## Development
+
+Development for this extension is happening as part of the [persistence initiative](https://typo3.org/community/teams/typo3-development/initiatives/persistence/).
