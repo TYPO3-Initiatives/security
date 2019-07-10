@@ -3,35 +3,37 @@ language: php
 php:
   - 7.2
 
+services:
+  - mysql
+
 addons:
   apt:
     packages:
       - parallel
 
+env:
+  global:
+    - CODACY_PROJECT_TOKEN=a3ba86a8a97846e9a8bca68975f22c66
+
 install:
   - >
-    mkdir -p .build
-    cd .build
-  - >
-    composer init --name build/travis --type project --stability dev --require typo3/cms-security:dev-master --require typo3/testing-framework:^5.0 --no-interaction;
-    composer config prefer-stable true;
-    composer config repositories.0 git https://github.com/typo3-initiatives/security;
-    composer config repositories.1 git https://github.com/typo3-initiatives/configuration;
     composer install;
+    composer build:package:link
 
 script:
   - >
     echo;
     echo "Running php lint";
-    find . -name \*.php ! -path "./*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
+    find . -name \*.php ! -path "./.build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
   - >
     echo;
     echo "Running unit tests";
-    vendor/bin/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml Tests/Unit/
+    .build/bin/phpunit -c Build/UnitTests.xml Tests/Unit/ --coverage-clover .build/coverage.xml;
+    .build/bin/codacycoverage clover .build/coverage.xml
   - >
     echo;
     echo "Running functional tests";
     export typo3DatabaseName="typo3";
     export typo3DatabaseHost="localhost";
     export typo3DatabaseUsername="root";
-    vendor/bin/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml Tests/Functional/
+    .build/bin/phpunit -c Build/FunctionalTests.xml Tests/Functional/

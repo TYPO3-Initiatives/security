@@ -10,6 +10,8 @@
         "role": "Developer"
     }],
     "config": {
+        "vendor-dir": ".build/vendor",
+        "bin-dir": ".build/bin",
         "sort-packages": true
     },
     "require": {
@@ -18,13 +20,15 @@
         "webmozart/assert": "^1.0"
     },
     "require-dev": {
-        "typo3/testing-framework": "^5.0"
+        "typo3/testing-framework": "^5.0",
+        "codacy/coverage": "^1.4",
+        "slevomat/coding-standard": "^4.8"
     },
     "conflict": {
         "typo3/cms": "*"
     },
     "replace": {
-        "security": "*"
+        "typo3/cms-security": "self.version"
     },
     "extra": {
         "branch-alias": {
@@ -32,6 +36,8 @@
         },
         "typo3/cms": {
             "extension-key": "security",
+            "app-dir": ".build",
+            "web-dir": ".build/public",
             "Package": {
                 "partOfFactoryDefault": true
             }
@@ -41,6 +47,7 @@
         "psr-4": {
             "TYPO3\\CMS\\Backend\\Policy\\": "Classes/Backend/Policy",
             "TYPO3\\CMS\\Core\\Policy\\": "Classes/Core/Policy",
+            "TYPO3\\CMS\\Security\\Build\\": "Build/",
             "TYPO3\\CMS\\Security\\Policy\\": "Classes/Policy"
         }
     },
@@ -48,5 +55,21 @@
         "psr-4": {
             "TYPO3\\CMS\\Security\\Tests\\": "Tests/"
         }
+    },
+    "minimum-stability": "dev",
+    "scripts": {
+        "build:package:link": [
+            "TYPO3\\CMS\\Security\\Build\\Composer\\ScriptHelper::linkPackage"
+        ],
+        "test:php:unit": [
+            "@php .build/bin/phpunit -c Build/UnitTests.xml"
+        ],
+        "test:php:functional": [
+            "@php .build/bin/phpunit -c Build/FunctionalTests.xml"
+        ],
+        "test": [
+            "@test:php:unit",
+            "@test:php:functional"
+        ]
     }
 }
