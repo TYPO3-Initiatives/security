@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Security\Tests\Functional\Policy;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Policy\ExpressionLanguage\Attribute\EntityResourceAttribute;
 use TYPO3\CMS\Core\Policy\ExpressionLanguage\Attribute\ReadActionAttribute;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Security\Policy\PolicyDecision;
 use TYPO3\CMS\Security\Policy\PolicyDecisionPoint;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -50,7 +50,7 @@ class PolicyDecisionPointTest extends FunctionalTestCase
                 1,
                 [
                     'resource' => new EntityResourceAttribute('be_users'),
-                    'action' => new ReadActionAttribute()
+                    'action' => new ReadActionAttribute(),
                 ],
                 '',
                 PolicyDecision::PERMIT,
@@ -59,7 +59,7 @@ class PolicyDecisionPointTest extends FunctionalTestCase
                 3,
                 [
                     'resource' => new EntityResourceAttribute('tt_content'),
-                    'action' => new ReadActionAttribute()
+                    'action' => new ReadActionAttribute(),
                 ],
                 '',
                 PolicyDecision::PERMIT,
