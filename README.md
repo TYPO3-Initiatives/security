@@ -142,9 +142,7 @@ $policyDecision = $policyDecisionPoint->authorize(
     'resource' => new EntityResourceAttribute('be_users'),
     // action on resource
     'action' => new ReadActionAttribute()
-  ],
-  // optional policy path to skip some top level processing
-  'Vendor/ExamplePolicy'
+  ]
 );
 
 if (!$policyDecision->isApplicable()) {

@@ -61,16 +61,13 @@ class PolicyDecisionPoint implements SingletonInterface
      * Authorize an access request
      *
      * @param array $attributes Attributes of the access request
-     * @param string $policy Path of the policy to to start from, if none given evaluation starts from the root
      * @return PolicyDecision Authorization decision for the request
-     * @throws InvalidArgumentException When the specified policy was not found
      */
-    public function authorize(array $attributes, string $policy = ''): PolicyDecision
+    public function authorize(array $attributes): PolicyDecision
     {
         $policyExpressionResolver = GeneralUtility::makeInstance(Resolver::class, 'policy', $attributes);
-        $rootPolicy = $this->getPolicy($policy);
 
-        $decision = $rootPolicy->evaluate($policyExpressionResolver);
+        $decision = $this->rootPolicy->evaluate($policyExpressionResolver);
 
         $this->eventDispatcher->dispatch(
             new AfterPolicyDecisionEvent(
@@ -81,18 +78,5 @@ class PolicyDecisionPoint implements SingletonInterface
         );
 
         return $decision;
-    }
-
-    protected function getPolicy(string $path)
-    {
-        $path = array_filter(str_getcsv($path, '/'));
-        $policy = $this->rootPolicy;
-
-        foreach ($path as $segment) {
-            Assert::keyExists($policy, $segment);
-            $policy = $policy[$segment];
-        }
-
-        return $policy;
     }
 }
