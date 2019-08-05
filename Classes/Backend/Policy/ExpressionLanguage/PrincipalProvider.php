@@ -45,7 +45,7 @@ class PrincipalProvider implements PrincipalProviderInterface
             );
 
             foreach ($backendUserAuthentication->userGroups as $userGroup) {
-                $principals[] = new GroupPrincipalAttribute($userGroup['uid'], $userGroup['title']);
+                $principals[] = new GroupPrincipalAttribute((int) $userGroup['uid'], $userGroup['title']);
             }
 
             if ($backendUserAuthentication->isAdmin()) {
