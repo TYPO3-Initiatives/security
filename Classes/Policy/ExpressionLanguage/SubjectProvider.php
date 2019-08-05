@@ -46,7 +46,7 @@ class SubjectProvider extends AbstractProvider
         ];
 
         $this->expressionLanguageProviders = [
-            SubjectFunctionsProvider::class
+            SubjectFunctionsProvider::class,
          ];
     }
 }

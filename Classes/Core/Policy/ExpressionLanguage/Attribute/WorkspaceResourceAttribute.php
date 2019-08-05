@@ -42,7 +42,7 @@ final class WorkspaceResourceAttribute extends ResourceAttribute
      */
     public function __construct(int $uid)
     {
-        parent::__construct((string)$uid);
+        parent::__construct((string) $uid);
 
         $this->uid = $uid;
     }

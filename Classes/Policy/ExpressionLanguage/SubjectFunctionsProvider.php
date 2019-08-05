@@ -29,7 +29,7 @@ class SubjectFunctionsProvider implements ExpressionFunctionProviderInterface
     {
         return [
             $this->getHasPermissionFunction(),
-            $this->getHasAuthorityFunction()
+            $this->getHasAuthorityFunction(),
         ];
     }
 

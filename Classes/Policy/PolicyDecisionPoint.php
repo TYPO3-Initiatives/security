@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Security\Policy;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;

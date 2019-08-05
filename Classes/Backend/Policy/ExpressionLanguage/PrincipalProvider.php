@@ -35,13 +35,13 @@ class PrincipalProvider implements PrincipalProviderInterface
     public function provide(Context $context): array
     {
         $backendUserAuthentication = $this->getBackendUserAuthentication($context);
-        $backendUserIdentifier = (int)($backendUserAuthentication->user[$backendUserAuthentication->userid_column ?? 'uid'] ?? 0);
+        $backendUserIdentifier = (int) ($backendUserAuthentication->user[$backendUserAuthentication->userid_column ?? 'uid'] ?? 0);
         $principals = [];
 
         if ($backendUserAuthentication && $backendUserIdentifier > 0) {
             $principals[] = new UserPrincipalAttribute(
                 $backendUserIdentifier,
-                (string)($backendUserAuthentication->user[$backendUserAuthentication->username_column ?? 'username'] ?? '')
+                (string) ($backendUserAuthentication->user[$backendUserAuthentication->username_column ?? 'username'] ?? '')
             );
 
             foreach ($backendUserAuthentication->userGroups as $userGroup) {

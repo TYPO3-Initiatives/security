@@ -47,7 +47,7 @@ final class EntityResourceAttribute extends ResourceAttribute
      */
     public function __construct(string $entity, int $uid = null)
     {
-        parent::__construct($uid ? $entity . ':' . (string)$uid : $entity);
+        parent::__construct($uid ? $entity . ':' . (string) $uid : $entity);
 
         $this->uid = $uid;
         $this->entity = $entity;

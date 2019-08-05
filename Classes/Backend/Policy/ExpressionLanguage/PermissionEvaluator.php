@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Backend\Policy\ExpressionLanguage;
 
 /*
@@ -17,15 +18,15 @@ namespace TYPO3\CMS\Backend\Policy\ExpressionLanguage;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Policy\ExpressionLanguage\Attribute\EntityResourceAttribute;
+use TYPO3\CMS\Core\Policy\ExpressionLanguage\Attribute\LanguageResourceAttribute;
 use TYPO3\CMS\Core\Policy\ExpressionLanguage\Attribute\PropertyDefinitionResourceAttribute;
 use TYPO3\CMS\Core\Policy\ExpressionLanguage\Attribute\ReadActionAttribute;
 use TYPO3\CMS\Core\Policy\ExpressionLanguage\Attribute\WriteActionAttribute;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute\ResourceAttribute;
 use TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute\ActionAttribute;
+use TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute\ResourceAttribute;
 use TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute\SubjectAttribute;
 use TYPO3\CMS\Security\Policy\ExpressionLanguage\PermissionEvaluatorInterface;
-use TYPO3\CMS\Core\Policy\ExpressionLanguage\Attribute\LanguageResourceAttribute;
 
 /**
  * @internal
@@ -113,11 +114,11 @@ class PermissionEvaluator implements PermissionEvaluatorInterface
                 ->execute();
 
             while ($row = $ressource->fetch(\PDO::FETCH_ASSOC)) {
-                $principal = (string)$row['uid'];
+                $principal = (string) $row['uid'];
 
                 foreach ([
                     'tables_select' => ReadActionAttribute::TYPE,
-                    'tables_modify' => WriteActionAttribute::TYPE
+                    'tables_modify' => WriteActionAttribute::TYPE,
                 ] as $field => $action) {
                     foreach (array_filter(explode(',', $row[$field])) as $table) {
                         self::$permissions[$principal][EntityResourceAttribute::TYPE][$table][$action] = true;
@@ -128,16 +129,15 @@ class PermissionEvaluator implements PermissionEvaluatorInterface
                     list($table, $field) = explode(':', $field);
                     self::$permissions[$principal][PropertyDefinitionResourceAttribute::TYPE][$table][$field] = [
                         ReadActionAttribute::TYPE => true,
-                        WriteActionAttribute::TYPE => true
+                        WriteActionAttribute::TYPE => true,
                     ];
                 }
 
                 foreach (empty(trim($row['allowed_languages'])) ? $this->getLanguages()
-                    : array_filter(explode(',', $row['allowed_languages'])) as $language
-                ) {
-                    self::$permissions[$principal][LanguageResourceAttribute::TYPE][(string)$language] = [
+                    : array_filter(explode(',', $row['allowed_languages'])) as $language) {
+                    self::$permissions[$principal][LanguageResourceAttribute::TYPE][(string) $language] = [
                         ReadActionAttribute::TYPE => true,
-                        WriteActionAttribute::TYPE => true
+                        WriteActionAttribute::TYPE => true,
                     ];
                 }
 
@@ -148,7 +148,7 @@ class PermissionEvaluator implements PermissionEvaluatorInterface
                     if ($effect === 'ALLOW' && $mode === 'explicitAllow'
                         || $effect === 'DENY' && $mode === 'explicitDeny'
                         || array_reduce($items, function ($decision, $item) use ($enumeral, $effect) {
-                            return $decision || $item[1] ?? null === $enumeral && $item[4] ?? null === $effect;
+                            return $decision || $item[1] ?? $enumeral === null && $item[4] ?? $effect === null;
                         }, false)
                     ) {
                         continue;
@@ -156,7 +156,7 @@ class PermissionEvaluator implements PermissionEvaluatorInterface
 
                     self::$permissions[$principal][EnumeralDefinitionResourceAttribute::TYPE][$table][$field][$enumeral] = [
                         ReadActionAttribute::TYPE => true,
-                        WriteActionAttribute::TYPE => true
+                        WriteActionAttribute::TYPE => true,
                     ];
                 }
             }

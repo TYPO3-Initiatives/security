@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Security\Policy\ExpressionLanguage;
  */
 
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute\PrincipalAttribute;
 
 /**
  * Strategy used in policy expression evaluation to determine all principal of the subject for a given context.

@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Security\Policy\ExpressionLanguage;
 
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @internal
@@ -28,7 +27,7 @@ class EnvironmentFunctionsProvider implements ExpressionFunctionProviderInterfac
     public function getFunctions()
     {
         return [
-            $this->getConstantFunction()
+            $this->getConstantFunction(),
         ];
     }
 

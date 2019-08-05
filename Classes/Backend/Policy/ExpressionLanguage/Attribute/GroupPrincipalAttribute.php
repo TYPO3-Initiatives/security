@@ -47,7 +47,7 @@ class GroupPrincipalAttribute extends PrincipalAttribute
      */
     public function __construct(int $uid, string $name)
     {
-        parent::__construct((string)$uid);
+        parent::__construct((string) $uid);
 
         $this->uid = $uid;
         $this->name = $name;
