@@ -162,35 +162,31 @@ if ($policyDecision->getValue() === PolicyDecision::PERMIT)
 // access is denied otherwise
 ```
 
-To receive all operations which should be performed after denying or granting an access request the signal `enforcePolicyDecision` has to be used:
+To receive all operations which should be performed after denying or granting an access request the event `\TYPO3\CMS\Security\Policy\Event\AfterPolicyDecisionEvent` has to be used:
 
-```php
-<?php
-
-\TYPO3\CMS\Core\Utility\GeneralUtilityGeneralUtility::makeInstance(
-  \TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class
-)->connect(
-  \TYPO3\CMS\Security\Policy\PolicyEnforcement::class,
-  'afterPolicyDecision',
-  \Vendor\Example\Slot\PolicyDecisionSlot::class,
-  'processDecision'
-);
+```yaml
+services:
+  Vendor\Example\EventListener\PolicyDecisionPoint:
+    tags:
+      -
+        name: event.listener
+        identifier: 'vendorPolicyDecisionListener'
+        event: TYPO3\CMS\Security\Policy\Event\AfterPolicyDecisionEvent
 ```
 
 ```php
 <?php
 
-namespace Vendor\Example\Slot;
+namespace Vendor\Example\EventListener;
 
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Security\Policy\PolicyDecision;
+use TYPO3\CMS\Security\Policy\Event\AfterPolicyDecisionEvent;
 
-class PolicyDecisionSlot
+class PolicyDecisionPoint
 {
-  public function processDecision(Context $context, PolicyDecision $decision, array $attributes)
-  {
-    // handle your operation
-  }
+    public function __invoke(AfterPolicyDecisionEvent $event)
+    {
+        // ...
+    }
 }
 ```
 

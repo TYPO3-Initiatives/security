@@ -16,12 +16,13 @@ namespace TYPO3\CMS\Security\Policy;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
-use TYPO3\CMS\Security\Policy\Exception\NotApplicableException;
+use TYPO3\CMS\Security\Policy\Event\AfterPolicyDecisionEvent;
 use Webmozart\Assert\Assert;
 
 /**
@@ -41,9 +42,9 @@ class PolicyDecisionPoint implements SingletonInterface
     protected $rootPolicy;
 
     /**
-     * @var Dispatcher
+     * @var EventDispatcherInterface
      */
-    protected $signalSlotDispatcher;
+    protected $eventDispatcher;
 
     /**
      * @todo Support custom context, therefore the expression resolver muste pass a custom context to the expression provider
@@ -54,7 +55,7 @@ class PolicyDecisionPoint implements SingletonInterface
 
         $this->rootPolicy = GeneralUtility::makeInstance(PolicyFactory::class)->build($policyConfiguration);
         $this->context = GeneralUtility::makeInstance(Context::class);
-        $this->signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
+        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcher::class);
     }
 
     /**
@@ -72,10 +73,12 @@ class PolicyDecisionPoint implements SingletonInterface
 
         $decision = $rootPolicy->evaluate($policyExpressionResolver);
 
-        $this->signalSlotDispatcher->dispatch(
-            self::class,
-            'afterPolicyDecision',
-            [$decision, $attributes, $this->context]
+        $this->eventDispatcher->dispatch(
+            new AfterPolicyDecisionEvent(
+                $decision,
+                $this->context,
+                $attributes
+            )
         );
 
         return $decision;
