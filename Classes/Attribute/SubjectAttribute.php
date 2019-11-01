@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute;
+namespace TYPO3\CMS\Security\Attribute;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -19,15 +19,26 @@ namespace TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute;
 /**
  * @api
  */
-class ResourceAttribute extends AbstractAttribute
+final class SubjectAttribute extends AbstractAttribute
 {
     /**
-     * @inheritdoc
+     * @var string
      */
-    const TYPE = 'security.resource';
+    public $identifier;
 
+    /**
+     * @var array
+     */
+    public $principals;
+
+    /**
+     * Creates a subject attribute.
+     *
+     * @param string $identifier Subject identifier
+     */
     public function __construct(string $identifier)
     {
-        parent::__construct($identifier);
+        $this->identifier = $identifier;
+        $this->principals = [];
     }
 }

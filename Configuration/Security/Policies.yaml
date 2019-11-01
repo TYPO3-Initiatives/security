@@ -1,0 +1,46 @@
+TYPO3:
+  CMS:
+    Policy:
+      description: Root policy set.
+      algorithm: highestPriority
+      policies:
+        Backend:
+          description: Backend policy set.
+          target: '"cms:backend:resource" in resource.classes'
+          algorithm: highestPriority
+          priority: 100
+          policies:
+            Resource:
+              description: Backend resource policy set.
+              algorithm: highestPriority
+              priority: 100
+              policies:
+                User:
+                  description: Primary principal policy.
+                  algorithm: denyOverrides
+                  priority: 10
+                  rules:
+                    - 
+                      # resource identifiers must contain a global unique identifier
+                      target: 'hasPermission("cms:backend:user", resource.identifier, action.class, "deny")'
+                      effect: deny
+                    -
+                      target: 'hasPermission("cms:backend:user", resource.identifier, action.class, "permit")'
+                      effect: permit
+                Group:
+                  description: Secondary principal policy.
+                  algorithm: denyOverrides
+                  rules:
+                    -
+                      target: 'hasPermission("cms:backend:group", resource.identifier, action.class, "deny")'
+                      effect: deny
+                    -
+                      target: 'hasPermission("cms:backend:group", resource.identifier, action.class, "permit")'
+                      effect: permit
+        Default:
+          description: Deny everything per default.
+          rules:
+            -
+              obligation:
+                deny:
+                  Feedback: ['Access denied.']

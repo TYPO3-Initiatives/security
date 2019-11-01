@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Security\Tests\Unit\Policy\ExpressionLanguage\Attribute;
+namespace TYPO3\CMS\Security\Tests\Unit\Attribute;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Security\Tests\Unit\Policy\ExpressionLanguage\Attribute;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute\ResourceAttribute;
+use TYPO3\CMS\Security\Attribute\ResourceAttribute;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**

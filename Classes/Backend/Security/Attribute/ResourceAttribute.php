@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute;
+namespace TYPO3\CMS\Backend\Security\Attribute;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,23 +18,24 @@ namespace TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute;
 
 /**
  * @api
+ * @todo Move into extension `backend`.
  */
-final class SubjectAttribute extends AbstractAttribute
+class ResourceAttribute extends \TYPO3\CMS\Security\Attribute\ResourceAttribute
 {
     /**
-     * @inheritdoc
+     * @var array
      */
-    const TYPE = 'security.subject';
+    public $permissions;
 
     /**
-     * @var PrincipalAttribute[]
+     * Creates a backend resource attribute.
+     *
+     * @param string $identifier Resource identifier
      */
-    public $principals;
-
-    public function __construct(string $identifier, PrincipalAttribute ...$principals)
+    public function __construct(string $identifier)
     {
         parent::__construct($identifier);
 
-        $this->principals = $principals;
+        $this->permissions = [];
     }
 }

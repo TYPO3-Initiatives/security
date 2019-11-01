@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute;
+namespace TYPO3\CMS\Backend\Security\Attribute;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,29 +16,35 @@ namespace TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Security\Attribute\PrincipalAttribute;
+
 /**
  * @api
+ * @todo Move into extension `backend`.
  */
-abstract class AbstractAttribute
+class GroupAttribute extends PrincipalAttribute
 {
     /**
      * @var string
      */
-    const TYPE = 'security.attribute';
+    public $name;
 
     /**
-     * @var string
+     * @var int
      */
-    public $type;
+    public $uid;
 
     /**
-     * @var string
+     * Creates a group principal attribute.
+     *
+     * @param int $uid Unique identifier
+     * @param string $name Group name
      */
-    public $identifier;
-
-    public function __construct(string $identifier)
+    public function __construct(int $uid, string $name)
     {
-        $this->type = static::TYPE;
-        $this->identifier = $identifier;
+        parent::__construct((string) $uid);
+
+        $this->uid = $uid;
+        $this->name = $name;
     }
 }

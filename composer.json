@@ -43,10 +43,12 @@
     },
     "autoload": {
         "psr-4": {
-            "TYPO3\\CMS\\Backend\\Policy\\": "Classes/Backend/Policy",
-            "TYPO3\\CMS\\Core\\Policy\\": "Classes/Core/Policy",
+            "TYPO3\\CMS\\Backend\\Security\\": "Classes/Backend/Security",
             "TYPO3\\CMS\\Security\\Build\\": "Build/",
-            "TYPO3\\CMS\\Security\\Policy\\": "Classes/Policy"
+            "TYPO3\\CMS\\Security\\Attribute\\": "Classes/Attribute",
+            "TYPO3\\CMS\\Security\\Event\\": "Classes/Event",
+            "TYPO3\\CMS\\Security\\Policy\\": "Classes/Policy",
+            "TYPO3\\CMS\\Security\\Utility\\": "Classes/Utility"
         }
     },
     "autoload-dev": {

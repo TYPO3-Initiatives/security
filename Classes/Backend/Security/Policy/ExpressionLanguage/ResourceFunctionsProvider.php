@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Security\Policy\ExpressionLanguage;
+namespace TYPO3\CMS\Backend\Security\Policy\ExpressionLanguage;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -21,34 +21,36 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 
 /**
  * @internal
+ * @todo Move into extension `backend`.
  */
-class SubjectFunctionsProvider implements ExpressionFunctionProviderInterface
+class ResourceFunctionsProvider implements ExpressionFunctionProviderInterface
 {
     public function getFunctions()
     {
         return [
-            $this->getHasAuthorityFunction(),
+            $this->getHasPermissionFunction(),
         ];
     }
 
-    protected function getHasAuthorityFunction(): ExpressionFunction
+    protected function getHasPermissionFunction(): ExpressionFunction
     {
         return new ExpressionFunction(
-            'hasAuthority',
+            'hasPermission',
             function () {
                 // Not implemented, we only use the evaluator
             },
             function ($variables, ...$arguments) {
-                if (count($arguments) == 1) {
-                    return count(array_filter($variables['subject']->principals, function ($principal) use ($arguments) {
-                        return $principal->type === $arguments[0];
-                    })) > 0;
-                }
-
-                if (count($arguments) == 2) {
-                    return count(array_filter($variables['subject']->principals, function ($principal) use ($arguments) {
-                        return $principal->type === $arguments[0] && $principal->identifier === $arguments[1];
-                    })) === 1;
+                if (count($arguments) === 4) {
+                    foreach ($variables['resource']->permissions as $permission) {
+                        if (
+                            $permission->principal->class === $arguments[0]
+                            && $permission->resource === $arguments[1]
+                            && $permission->action === $arguments[2]
+                            && $permission->state === $arguments[3]
+                        ) {
+                            return true;
+                        }
+                    }
                 }
 
                 return false;

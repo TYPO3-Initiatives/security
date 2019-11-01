@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Security\Policy\Event;
+namespace TYPO3\CMS\Security\Event;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -22,7 +22,7 @@ use TYPO3\CMS\Security\Policy\PolicyDecision;
 /**
  * @api
  */
-final class AfterPolicyDecisionEvent
+final class PolicyDecisionEvent
 {
     /**
      * @var PolicyDecision

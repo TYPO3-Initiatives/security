@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Security\Policy\ExpressionLanguage;
+namespace TYPO3\CMS\Backend\Security\Policy\ExpressionLanguage;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,18 +17,19 @@ namespace TYPO3\CMS\Security\Policy\ExpressionLanguage;
  */
 
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\ExpressionLanguage\AbstractProvider;
+use TYPO3\CMS\Security\Policy\ExpressionLanguage\SubjectFunctionsProvider;
 
 /**
- * Strategy used in policy expression evaluation to determine all principal of the subject for a given context.
- * @api
+ * @internal
+ * @todo Move into extension `backend`.
  */
-interface PrincipalProviderInterface
+class ResourceProvider extends AbstractProvider
 {
-    /**
-     * Returns all principals for the given context.
-     *
-     * @param Context $context
-     * @return PrincipalAttribute[]
-     */
-    public function provide(Context $context): array;
+    public function __construct(Context $context = null)
+    {
+        $this->expressionLanguageProviders = [
+            ResourceFunctionsProvider::class,
+         ];
+    }
 }

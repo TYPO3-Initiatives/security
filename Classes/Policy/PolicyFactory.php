@@ -40,13 +40,14 @@ class PolicyFactory
         $stack = [$configuration];
         $policies = [];
 
-        // depth first search to build the graph
+        // depth first search to build the tree starting at its leafs
         while (end($stack)) {
             $configuration = end($stack);
 
             $visited[$configuration['id']] = true;
 
             foreach ($configuration['policies'] ?? [] as $id => $policy) {
+                $id = $configuration['id'] . '\\' . $id;
                 if (!isset($visited[$id])) {
                     $policy['id'] = $id;
                     $stack[] = $policy;
@@ -57,7 +58,7 @@ class PolicyFactory
             if (isset($configuration['rules'])) {
                 $policy = new Policy(
                     (string) $configuration['id'],
-                    $this->buildRules($configuration['rules']),
+                    $this->buildRules((string) $configuration['id'], $configuration['rules']),
                     $this->buildEvaluator($configuration['algorithm'] ?? null),
                     $configuration['description'] ?? null,
                     $configuration['target'] ?? null,
@@ -119,13 +120,13 @@ class PolicyFactory
     /**
      * @return PolicyRule[]
      */
-    protected function buildRules(array $configuration): array
+    protected function buildRules(string $namespace, array $configuration): array
     {
         $rules = [];
 
         foreach ($configuration as $id => $entry) {
             $rules[$id] = new PolicyRule(
-                (string) $id,
+                $namespace . '\\' . $id,
                 $entry['target'] ?? null,
                 $entry['condition'] ?? null,
                 $entry['effect'] ?? null,

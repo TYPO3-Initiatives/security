@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute;
+namespace TYPO3\CMS\Security\Attribute;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -22,12 +22,17 @@ namespace TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute;
 class PrincipalAttribute extends AbstractAttribute
 {
     /**
-     * @inheritdoc
+     * @var string
      */
-    const TYPE = 'security.principal';
+    public $identifier;
 
+    /**
+     * Creates a principal attribute.
+     *
+     * @param string $identifier Principal identifier
+     */
     public function __construct(string $identifier)
     {
-        parent::__construct($identifier);
+        $this->identifier = $identifier;
     }
 }

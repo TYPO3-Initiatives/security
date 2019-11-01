@@ -17,36 +17,35 @@ namespace TYPO3\CMS\Security\Policy\ExpressionLanguage;
  */
 
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\ExpressionLanguage\AbstractProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute\SubjectAttribute;
+use TYPO3\CMS\Security\Attribute\SubjectAttribute;
+use TYPO3\CMS\Security\Event\SubjectRetrivalEvent;
+use TYPO3\CMS\Security\Policy\ExpressionLanguage\SubjectFunctionsProvider;
 
 /**
  * @internal
+ * @todo Retrive the principals only once and cache the result
  */
 class SubjectProvider extends AbstractProvider
 {
     public function __construct(Context $context = null)
     {
         $context = $context ?? GeneralUtility::makeInstance(Context::class);
-        $principals = [];
-        $principalProviders = $GLOBALS['TYPO3_CONF_VARS']['SYS']['security']['principalProvider'];
+        $eventDispatcher = GeneralUtility::makeInstance(EventDispatcher::class);
 
-        foreach ($principalProviders as $principalProvider) {
-            $principals = array_merge(
-                $principals,
-                GeneralUtility::makeInstance($principalProvider)->provide($context)
-            );
-        }
+        $subjectAttribute = new SubjectAttribute(uniqid());
+        $event = new SubjectRetrivalEvent($context, $subjectAttribute);
 
-        $subject = new SubjectAttribute(uniqid(), ...$principals);
+        $eventDispatcher->dispatch($event);
 
         $this->expressionLanguageVariables = [
-            'subject' => $subject,
+            'subject' => $event->getSubject(),
         ];
 
         $this->expressionLanguageProviders = [
             SubjectFunctionsProvider::class,
-         ];
+        ];
     }
 }

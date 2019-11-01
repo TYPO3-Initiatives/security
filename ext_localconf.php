@@ -10,11 +10,11 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['security']
     'groups' => ['system']
 ];
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['security'] = [
-    'permissionEvaluator' => [
-        \TYPO3\CMS\Backend\Policy\ExpressionLanguage\PermissionEvaluator::class,
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['backend'] = [
+    'frontend' => \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class,
+    'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
+    'options' => [
+        'defaultLifetime' => 0,
     ],
-    'principalProvider' => [
-        \TYPO3\CMS\Backend\Policy\ExpressionLanguage\PrincipalProvider::class,
-    ],
+    'groups' => ['system']
 ];

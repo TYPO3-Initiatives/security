@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute;
+namespace TYPO3\CMS\Security\Attribute;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -19,15 +19,20 @@ namespace TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute;
 /**
  * @api
  */
-class ActionAttribute extends AbstractAttribute
+class ResourceAttribute extends AbstractAttribute
 {
     /**
-     * @inheritdoc
+     * @var string
      */
-    const TYPE = 'security.action';
+    public $identifier;
 
+    /**
+     * Creates a resource attribute.
+     *
+     * @param string $identifier Resource identifier
+     */
     public function __construct(string $identifier)
     {
-        parent::__construct($identifier);
+        $this->identifier = $identifier;
     }
 }

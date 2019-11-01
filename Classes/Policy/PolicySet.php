@@ -45,7 +45,7 @@ final class PolicySet extends AbstractPolicy
         ?array $denyObligations = null,
         ?array $permitObligations = null
     ) {
-        Assert::notEmpty($policies);
+        Assert::notEmpty($policies, sprintf('Policy set %s must have at least one policy', $id));
         Assert::allIsInstanceOf($policies, AbstractPolicy::class);
 
         parent::__construct($id, $description, $target, $priority, $denyObligations, $permitObligations);

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Security\Tests\Unit\Policy\ExpressionLanguage\Attribute;
+namespace TYPO3\CMS\Security\Tests\Unit\Attribute;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,20 +16,21 @@ namespace TYPO3\CMS\Security\Tests\Unit\Policy\ExpressionLanguage\Attribute;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute\ActionAttribute;
+use TYPO3\CMS\Security\Attribute\PrincipalAttribute;
+use TYPO3\CMS\Security\Attribute\SubjectAttribute;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class ActionAttributeTest extends UnitTestCase
+class SubjectAttributeTest extends UnitTestCase
 {
     /**
      * @test
      */
     public function constructPropagatesIdentifier()
     {
-        $subject = new ActionAttribute('foo');
+        $subject = new SubjectAttribute('foo');
 
         $this->assertEquals('foo', $subject->identifier);
     }
@@ -39,8 +40,23 @@ class ActionAttributeTest extends UnitTestCase
      */
     public function constructPropagatesType()
     {
-        $subject = new ActionAttribute('bar');
+        $subject = new SubjectAttribute('qux');
 
-        $this->assertEquals(ActionAttribute::TYPE, $subject->type);
+        $this->assertEquals(SubjectAttribute::TYPE, $subject->type);
+    }
+
+    /**
+     * @test
+     */
+    public function constructPropagatesPrincipals()
+    {
+        $expected = [
+            new PrincipalAttribute('foo'),
+            new PrincipalAttribute('qux'),
+        ];
+
+        $subject = new SubjectAttribute('baz', ...$expected);
+
+        $this->assertEquals($expected, $subject->principals);
     }
 }

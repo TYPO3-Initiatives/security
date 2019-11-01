@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Security\Tests\Unit\Policy\ExpressionLanguage\Attribute;
+namespace TYPO3\CMS\Security\Tests\Unit\Attribute;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,22 +16,22 @@ namespace TYPO3\CMS\Security\Tests\Unit\Policy\ExpressionLanguage\Attribute;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute\PrincipalAttribute;
+use TYPO3\CMS\Security\Attribute\ActionAttribute;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class PrincipalAttributeTest extends UnitTestCase
+class ActionAttributeTest extends UnitTestCase
 {
     /**
      * @test
      */
     public function constructPropagatesIdentifier()
     {
-        $subject = new PrincipalAttribute('bar');
+        $subject = new ActionAttribute('foo');
 
-        $this->assertEquals('bar', $subject->identifier);
+        $this->assertEquals('foo', $subject->identifier);
     }
 
     /**
@@ -39,8 +39,8 @@ class PrincipalAttributeTest extends UnitTestCase
      */
     public function constructPropagatesType()
     {
-        $subject = new PrincipalAttribute('qux');
+        $subject = new ActionAttribute('bar');
 
-        $this->assertEquals(PrincipalAttribute::TYPE, $subject->type);
+        $this->assertEquals(ActionAttribute::TYPE, $subject->type);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Security\Policy;
+namespace TYPO3\CMS\Backend\Security\Permission;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -23,9 +23,9 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Resolves the expression language provider configuration and stores it in a cache.
+ * Resolves the permissions configuration and stores it in a cache.
  */
-class PolicyConfigurationLoader
+class PermissionConfigurationLoader
 {
     /**
      * @var FrontendInterface
@@ -35,7 +35,7 @@ class PolicyConfigurationLoader
     /**
      * @var string
      */
-    private $cacheIdentifier = 'policies-configuration';
+    private $cacheIdentifier = 'permissions-configuration';
 
     /**
      * @var PackageManager
@@ -59,10 +59,8 @@ class PolicyConfigurationLoader
     /**
      * @return array
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
-     * @todo Preparsed expressions in cache
-     * @todo Validate before cache
      */
-    public function getPolicyConfiguration(): array
+    public function getPermissionConfiguration(): array
     {
         if ($this->cache->has($this->cacheIdentifier)) {
             return $this->cache->require($this->cacheIdentifier);
@@ -72,19 +70,26 @@ class PolicyConfigurationLoader
         $entry = [];
 
         foreach ($packages as $package) {
-            $packageConfiguration = $package->getPackagePath() . 'Configuration/Security/Policies.yaml';
-
+            $packageConfiguration = $package->getPackagePath() . 'Configuration/Backend/Permissions.yaml';
+            
             if (!file_exists($packageConfiguration)) {
                 continue;
             }
-
-            $policiesInPackage = $this->yamlFileLoader->load($packageConfiguration);
-            if (isset($policiesInPackage['TYPO3']['CMS']['Policy'])) {
-                $entry[] = $policiesInPackage['TYPO3']['CMS']['Policy'];
+            
+            $permissionsInPackage = $this->yamlFileLoader->load($packageConfiguration);
+            
+            if (isset($permissionsInPackage['TYPO3']['CMS']['Permission']['Resources'])) {
+                foreach ($permissionsInPackage['TYPO3']['CMS']['Permission']['Resources'] as $resource) {
+                    $entry['Resources'][$resource['identifier']] = $resource;
+                }
+            }
+            
+            if (isset($permissionsInPackage['TYPO3']['CMS']['Permission']['Actions'])) {
+                foreach ($permissionsInPackage['TYPO3']['CMS']['Permission']['Actions'] as $action) {
+                    $entry['Actions'][$action['identifier']] = $action;
+                }
             }
         }
-
-        $entry = count($entry) > 0 ? array_replace_recursive(...$entry) : $entry;
 
         $this->cache->set($this->cacheIdentifier, 'return ' . var_export($entry ?? [], true) . ';');
 

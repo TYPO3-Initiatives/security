@@ -19,15 +19,15 @@ namespace TYPO3\CMS\Security\Policy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Security\Policy\Event\AfterPolicyDecisionEvent;
+use TYPO3\CMS\Security\Event\AttributeRetrivalEvent;
+use TYPO3\CMS\Security\Event\PolicyDecisionEvent;
 
 /**
  * Policy decision point
  * @api
  */
-class PolicyDecisionPoint implements SingletonInterface
+class PolicyDecisionPoint
 {
     /**
      * @var Context
@@ -45,14 +45,19 @@ class PolicyDecisionPoint implements SingletonInterface
     protected $eventDispatcher;
 
     /**
+     * @var array
+     */
+    protected $policyConfiguration;
+
+    /**
      * @todo Support custom context, therefore the expression resolver muste pass a custom context to the expression provider
      */
-    public function __construct()
+    public function __construct(Context $context = null)
     {
         $policyConfiguration = GeneralUtility::makeInstance(PolicyConfigurationLoader::class)->getPolicyConfiguration();
 
         $this->rootPolicy = GeneralUtility::makeInstance(PolicyFactory::class)->build($policyConfiguration);
-        $this->context = GeneralUtility::makeInstance(Context::class);
+        $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcher::class);
     }
 
@@ -64,12 +69,16 @@ class PolicyDecisionPoint implements SingletonInterface
      */
     public function authorize(array $attributes): PolicyDecision
     {
+        foreach ($attributes as $attribute) {
+            $this->eventDispatcher->dispatch(new AttributeRetrivalEvent($this->context, $attribute));
+        }
+
         $policyExpressionResolver = GeneralUtility::makeInstance(Resolver::class, 'policy', $attributes);
 
         $decision = $this->rootPolicy->evaluate($policyExpressionResolver);
 
         $this->eventDispatcher->dispatch(
-            new AfterPolicyDecisionEvent(
+            new PolicyDecisionEvent(
                 $decision,
                 $this->context,
                 $attributes

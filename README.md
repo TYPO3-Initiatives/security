@@ -49,7 +49,7 @@ The [expression language](https://docs.typo3.org/c/typo3/cms-core/master/en-us/C
 
 ### Configuration
 
-Policies are part of extension configurations and have to be defined with YAML (`Configuration/Yaml/Policies.yaml`). The root policy is in `TYPO3.CMS.Policy`. All policies are merged together in the topological sort of the extension depdency graph. Thus it is always possible to override existing policies.
+Policies are part of extension configurations and have to be defined with YAML (`Configuration/Security/Policies.yaml`). The root policy is in `TYPO3.CMS.Policy`. All policies are merged together in the topological sort of the extension depdency graph. Thus it is always possible to override existing policies.
 
 As shown in the following example, an administrator is allowed to do anything, but all others are not allowed to do anything:
 
@@ -160,7 +160,7 @@ if ($policyDecision->getValue() === PolicyDecision::PERMIT)
 // access is denied otherwise
 ```
 
-To receive all operations which should be performed after denying or granting an access request the event `\TYPO3\CMS\Security\Policy\Event\AfterPolicyDecisionEvent` has to be used:
+To receive all operations which should be performed after denying or granting an access request the event `\TYPO3\CMS\Security\Event\PolicyDecisionEvent` has to be used:
 
 ```yaml
 services:
@@ -169,7 +169,7 @@ services:
       -
         name: event.listener
         identifier: 'vendorPolicyDecisionListener'
-        event: TYPO3\CMS\Security\Policy\Event\AfterPolicyDecisionEvent
+        event: TYPO3\CMS\Security\Event\PolicyDecisionEvent
 ```
 
 ```php
@@ -177,77 +177,20 @@ services:
 
 namespace Vendor\Example\EventListener;
 
-use TYPO3\CMS\Security\Policy\Event\AfterPolicyDecisionEvent;
+use TYPO3\CMS\Security\Event\PolicyDecisionEvent;
 
 class PolicyDecisionPoint
 {
-    public function __invoke(AfterPolicyDecisionEvent $event)
+    public function __invoke(PolicyDecisionEvent $event)
     {
         // ...
     }
 }
 ```
 
-With an implementation of the `\TYPO3\CMS\Security\Policy\ExpressionLanguage\PrincipalProviderInterface` interface, the subject of an access query can be enriched with additional principals:
+### Design Principals
 
-```php
-<?php
-namespace Vendor\Example\Policy\ExpressionLanguage;
-
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Security\Policy\ExpressionLanguage\PrincipalProviderInterface;
-
-class PrincipalProvider implements PrincipalProviderInterface
-{
-  public function provide(Context $context): array
-  {
-    // collect here additional principals...
-  }
-}
-```
-
-It has to be registered globally via the `ext_localconf.php` and will be called on every access request:
-
-```php
-<?php
-
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['security']['principalProvider'][]
-  = \Vendor\Example\Policy\ExpressionLanguage\PrincipalProvider::class;
-```
-
-The common expression function `hasPermission` is extendable throught the interface `\TYPO3\CMS\Security\Policy\ExpressionLanguage\PermissionEvaluatorInterface`:
-
-```php
-namespace Vendor\Example\Policy\ExpressionLanguage;
-
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute\ResourceAttribute;
-use TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute\ActionAttribute;
-use TYPO3\CMS\Security\Policy\ExpressionLanguage\Attribute\SubjectAttribute;
-use TYPO3\CMS\Security\Policy\ExpressionLanguage\PermissionEvaluatorInterface;
-
-class PermissionEvaluator implements PermissionEvaluatorInterface
-{
-  public function canEvaluate(ResourceAttribute $resource, ActionAttribute $action): bool
-  {
-    // returns whether its able to evaluate a permission reqeust indicated by $resource and $action...
-  }
-
-  public function evaluate(SubjectAttribute $subject, ResourceAttribute $resource, ActionAttribute $action): bool
-  {
-    // returns true if $subject is allowed to perform $action on the given $resource
-  }
-}
-```
-
-Each evaluator has to be registered globally via the `ext_localconf.php`:
-
-```php
-<?php
-
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['security']['permissionEvaluator'][]
-  = \Vendor\Example\Policy\ExpressionLanguage\PermissionEvaluator::class;
-```
+Whenever possible the authorization logic should be part of a policy. Thus its auditable and changeable. For reasons of the performance or complexity it might be not possible. Then it's recommended to extend the expression language with a custom function.
 
 ## Development
 
