@@ -131,13 +131,13 @@ class PermissionAttributeProvider
                 ->execute();
 
             while ($row = $ressource->fetch(\PDO::FETCH_ASSOC)) {
-                $entry[$row['uid']] = json_decode((string)$row['permissions'], true);
+                $entry[$row['uid']] = json_decode((string) $row['permissions'], true);
             }
 
             $this->cache->set($cacheIdentifier, $entry);
         }
 
-        return $entry[(string)$groupId][$resource] ?? [];
+        return $entry[(string) $groupId][$resource] ?? [];
     }
 
     protected function getUserPermissions(int $userId, string $resource): array
@@ -160,13 +160,13 @@ class PermissionAttributeProvider
                 ->execute();
 
             while ($row = $ressource->fetch(\PDO::FETCH_ASSOC)) {
-                $entry[$row['uid']] = json_decode((string)$row['permissions'], true);
+                $entry[$row['uid']] = json_decode((string) $row['permissions'], true);
             }
 
             $this->cache->set($cacheIdentifier, $entry);
         }
 
-        return $entry[(string)$userId][$resource] ?? [];
+        return $entry[(string) $userId][$resource] ?? [];
     }
 
     protected function getGroupTitle(int $groupId): string
@@ -205,6 +205,6 @@ class PermissionAttributeProvider
             $this->cache->set($cacheIdentifier, $entry);
         }
 
-        return $entry[(string)$groupId] ?? '';
+        return $entry[(string) $groupId] ?? '';
     }
 }

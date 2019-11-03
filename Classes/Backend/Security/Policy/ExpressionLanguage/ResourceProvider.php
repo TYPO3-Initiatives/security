@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Backend\Security\Policy\ExpressionLanguage;
 
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\ExpressionLanguage\AbstractProvider;
-use TYPO3\CMS\Security\Policy\ExpressionLanguage\SubjectFunctionsProvider;
 
 /**
  * @internal

@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace TYPO3\CMS\Security\Attribute;
 
+use TYPO3\CMS\Security\Utility\AttributeUtility;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -33,6 +35,7 @@ class ResourceAttribute extends AbstractAttribute
      */
     public function __construct(string $identifier)
     {
-        $this->identifier = $identifier;
+        $this->identifier = $this->class . AttributeUtility::NAMESPACE_SEPARATOR
+            . AttributeUtility::translateClassNameToPolicyName($identifier);
     }
 }

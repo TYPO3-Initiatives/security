@@ -116,6 +116,6 @@ class PrincipalAttributeProvider
             $this->cache->set($cacheIdentifier, $entry);
         }
 
-        return $entry[(string)$groupId] ?? '';
+        return $entry[(string) $groupId] ?? '';
     }
 }

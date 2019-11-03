@@ -30,11 +30,12 @@ abstract class AbstractAttribute
 
     /**
      * Returns attribute meta
-     * 
+     *
      * @param string $name
      * @return mixed
      */
-    public function __get($name) {
+    public function __get($name)
+    {
         switch ($name) {
             case 'classes':
                 if (!isset(self::$meta[$name][static::class])) {

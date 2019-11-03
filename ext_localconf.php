@@ -7,7 +7,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['security']
     'options' => [
         'defaultLifetime' => 0,
     ],
-    'groups' => ['system']
+    'groups' => ['system'],
 ];
 
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['backend'] = [
@@ -16,5 +16,5 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['backend'] 
     'options' => [
         'defaultLifetime' => 0,
     ],
-    'groups' => ['system']
+    'groups' => ['system'],
 ];

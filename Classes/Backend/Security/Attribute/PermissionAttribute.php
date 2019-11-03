@@ -57,7 +57,7 @@ final class PermissionAttribute extends AbstractAttribute
 
     /**
      * Creates a backend permission attribute.
-     * 
+     *
      * @param PrincipalAttribute $principal Principal
      * @param string $state Resource identifier
      * @param string $action Action identifier

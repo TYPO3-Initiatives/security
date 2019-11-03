@@ -13,8 +13,8 @@ call_user_func(function () {
                 'rows' => 5,
                 'cols' => 30,
                 'max' => 2000,
-            ]
-        ]
+            ],
+        ],
     ];
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('be_groups', $additionalColumns);

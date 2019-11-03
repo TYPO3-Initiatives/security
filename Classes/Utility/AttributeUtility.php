@@ -21,17 +21,20 @@ namespace TYPO3\CMS\Security\Utility;
  */
 class AttributeUtility
 {
-    public static function translateClassNameToPolicyName($name) {
+    const NAMESPACE_SEPARATOR = ':';
+
+    public static function translateClassNameToPolicyName($name)
+    {
         return strtolower(preg_replace(
             [
-                '/(^[^\\\\]+\\\\|\\\\Security\\\\Attribute|Attribute$)/', 
+                '/(^[^\\\\]+\\\\|\\\\Security\\\\Attribute|Attribute$)/',
                 '/\\\\/',
-                '/(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z:])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z0-9:])/'
+                '/(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z:])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z0-9:])/',
             ],
             [
-                '', 
-                ':', 
-                '-'
+                '',
+                ':',
+                '-',
             ],
             $name
         ));
