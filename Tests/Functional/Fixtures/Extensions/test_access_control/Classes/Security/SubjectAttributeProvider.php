@@ -3,8 +3,8 @@ declare(strict_types = 1);
 
 namespace Example\AccessControl\Security;
 
-use TYPO3\CMS\Security\Attribute\PrincipalAttribute;
-use TYPO3\CMS\Security\Event\SubjectRetrivalEvent;
+use TYPO3\CMS\Security\AccessControl\Attribute\PrincipalAttribute;
+use TYPO3\CMS\Security\AccessControl\Event\SubjectRetrivalEvent;
 
 class SubjectAttributeProvider
 {

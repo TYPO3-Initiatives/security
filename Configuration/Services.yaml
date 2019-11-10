@@ -12,21 +12,21 @@ services:
   TYPO3\CMS\Security\:
     resource: '../Classes/*'
 
-  TYPO3\CMS\Security\Policy\PolicyDecisionPoint:
+  TYPO3\CMS\Security\AccessControl\Policy\PolicyDecisionPoint:
     public: true
     arguments:
       - '@TYPO3\CMS\Core\Context\Context'
       - '@TYPO3\CMS\Core\EventDispatcher\EventDispatcher'
       - '@cache.runtime'
-      - '@TYPO3\CMS\Security\Policy\PolicyConfigurationLoader'
-      - '@TYPO3\CMS\Security\Policy\PolicyFactory'
-      - '@TYPO3\CMS\Security\Policy\PolicyInformationPoint'
+      - '@TYPO3\CMS\Security\AccessControl\Policy\PolicyConfigurationLoader'
+      - '@TYPO3\CMS\Security\AccessControl\Policy\PolicyFactory'
+      - '@TYPO3\CMS\Security\AccessControl\Policy\PolicyInformationPoint'
 
-  TYPO3\CMS\Security\Policy\PolicyConfigurationLoader:
+  TYPO3\CMS\Security\AccessControl\Policy\PolicyConfigurationLoader:
     arguments:
       - '@cache.security'
 
-  TYPO3\CMS\Security\Policy\PolicyInformationPoint:
+  TYPO3\CMS\Security\AccessControl\Policy\PolicyInformationPoint:
     arguments:
       - '@TYPO3\CMS\Core\EventDispatcher\EventDispatcher'
       - '@cache.runtime'

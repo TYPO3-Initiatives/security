@@ -12,4 +12,4 @@ services:
       -
         name: event.listener
         identifier: 'security-example-principal-provider'
-        event: TYPO3\CMS\Security\Event\SubjectRetrivalEvent
+        event: TYPO3\CMS\Security\AccessControl\Event\SubjectRetrivalEvent
