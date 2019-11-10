@@ -16,34 +16,16 @@ namespace TYPO3\CMS\Security\Policy\ExpressionLanguage;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\ExpressionLanguage\AbstractProvider;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Security\Attribute\SubjectAttribute;
-use TYPO3\CMS\Security\Event\SubjectRetrivalEvent;
 use TYPO3\CMS\Security\Policy\ExpressionLanguage\SubjectFunctionsProvider;
 
 /**
  * @internal
- * @todo Retrive the principals only once and cache the result
  */
 class SubjectProvider extends AbstractProvider
 {
-    public function __construct(Context $context = null)
+    public function __construct()
     {
-        $context = $context ?? GeneralUtility::makeInstance(Context::class);
-        $eventDispatcher = GeneralUtility::makeInstance(EventDispatcher::class);
-
-        $subjectAttribute = new SubjectAttribute(uniqid());
-        $event = new SubjectRetrivalEvent($context, $subjectAttribute);
-
-        $eventDispatcher->dispatch($event);
-
-        $this->expressionLanguageVariables = [
-            'subject' => $event->getSubject(),
-        ];
-
         $this->expressionLanguageProviders = [
             SubjectFunctionsProvider::class,
         ];

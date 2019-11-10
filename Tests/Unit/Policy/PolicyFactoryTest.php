@@ -56,7 +56,7 @@ class PolicyFactoryTest extends UnitTestCase
                     'foo',
                     [
                         'qux' => new PolicyRule(
-                            'qux',
+                            'foo\qux',
                             'bar',
                             'baz',
                             null,
@@ -76,7 +76,7 @@ class PolicyFactoryTest extends UnitTestCase
             [
                 [
                     'target' => 'true',
-                    'description' => 'Root',
+                    'description' => 'baz',
                     'algorithm' => 'highestPriority',
                     'policies' => [
                         'foo' => [
@@ -154,10 +154,10 @@ class PolicyFactoryTest extends UnitTestCase
                     'Root',
                     [
                         'foo' => new Policy(
-                            'foo',
+                            'Root\foo',
                             [
                                 new PolicyRule(
-                                    '0',
+                                    'Root\foo\0',
                                     'false',
                                     null,
                                     PolicyRule::EFFECT_DENY,
@@ -168,7 +168,7 @@ class PolicyFactoryTest extends UnitTestCase
                                     null
                                 ),
                                 new PolicyRule(
-                                    '1',
+                                    'Root\foo\1',
                                     null,
                                     'true',
                                     PolicyRule::EFFECT_PERMIT,
@@ -190,13 +190,13 @@ class PolicyFactoryTest extends UnitTestCase
                             null
                         ),
                         'bar' => new PolicySet(
-                            'bar',
+                            'Root\bar',
                             [
                                 'baz' =>new Policy(
-                                    'baz',
+                                    'Root\bar\baz',
                                     [
                                         new PolicyRule(
-                                            '0',
+                                            'Root\bar\baz\0',
                                             null,
                                             'true',
                                             null,
@@ -205,7 +205,7 @@ class PolicyFactoryTest extends UnitTestCase
                                             null
                                         ),
                                         new PolicyRule(
-                                            '1',
+                                            'Root\bar\baz\1',
                                             null,
                                             'true',
                                             PolicyRule::EFFECT_PERMIT,
@@ -222,10 +222,10 @@ class PolicyFactoryTest extends UnitTestCase
                                     null
                                 ),
                                 'qux' => new Policy(
-                                    'qux',
+                                    'Root\bar\qux',
                                     [
                                         'baz' => new PolicyRule(
-                                            'baz',
+                                            'Root\bar\qux\baz',
                                             'false',
                                             null,
                                             PolicyRule::EFFECT_PERMIT,
@@ -254,7 +254,7 @@ class PolicyFactoryTest extends UnitTestCase
                         ),
                     ],
                     new HighestPriorityEvaluator(),
-                    'Root',
+                    'baz',
                     'true',
                     null,
                     null,

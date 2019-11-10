@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Security\Event;
 
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Security\Attribute\AbstractAttribute;
+use TYPO3\CMS\Security\Attribute\SubjectAttribute;
 
 /**
  * @api
@@ -34,10 +35,21 @@ final class AttributeRetrivalEvent
      */
     private $attribute;
 
-    public function __construct(Context $context, AbstractAttribute $attribute)
+    /**
+     * @var SubjectAttribute
+     */
+    private $subjectAttribute;
+
+    public function __construct(AbstractAttribute $attribute, Context $context, SubjectAttribute $subjectAttribute)
     {
-        $this->context = $context;
         $this->attribute = $attribute;
+        $this->context = $context;
+        $this->subjectAttribute = $subjectAttribute;
+    }
+
+    public function getAttribute(): AbstractAttribute
+    {
+        return $this->attribute;
     }
 
     public function getContext(): Context
@@ -45,8 +57,8 @@ final class AttributeRetrivalEvent
         return $this->context;
     }
 
-    public function getAttribute(): AbstractAttribute
+    public function getSubject(): SubjectAttribute
     {
-        return $this->attribute;
+        return $this->subjectAttribute;
     }
 }

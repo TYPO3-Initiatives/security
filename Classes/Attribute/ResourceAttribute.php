@@ -31,7 +31,7 @@ class ResourceAttribute extends AbstractAttribute
     /**
      * Creates a resource attribute.
      *
-     * @param string $identifier Resource identifier
+     * @param string $identifier Local resource identifier
      */
     public function __construct(string $identifier)
     {

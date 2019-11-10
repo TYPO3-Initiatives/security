@@ -1,0 +1,19 @@
+TYPO3:
+  CMS:
+    Policy:
+      policies:
+        Role:
+          target: 'hasAuthority("cms:principal:foo") and resource.identifier == "cms:resource:foo"'
+          description: 'Role policy.'
+          priority: 100
+          rules:
+            -
+              effect: permit
+        Default:
+          description: 'Fallback policy.'
+          priority: 25
+          rules:
+            -
+              obligation:
+                deny:
+                  Feedback: ['Access denied.']

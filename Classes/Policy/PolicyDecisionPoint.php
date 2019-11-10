@@ -16,11 +16,11 @@ namespace TYPO3\CMS\Security\Policy;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Security\Event\AttributeRetrivalEvent;
 use TYPO3\CMS\Security\Event\PolicyDecisionEvent;
 
 /**
@@ -29,6 +29,11 @@ use TYPO3\CMS\Security\Event\PolicyDecisionEvent;
  */
 class PolicyDecisionPoint
 {
+    /**
+     * @var FrontendInterface
+     */
+    protected $cache;
+
     /**
      * @var Context
      */
@@ -45,20 +50,23 @@ class PolicyDecisionPoint
     protected $eventDispatcher;
 
     /**
-     * @var array
+     * @var PolicyInformationPoint
      */
-    protected $policyConfiguration;
+    protected $policyInformationPoint;
 
-    /**
-     * @todo Support custom context, therefore the expression resolver muste pass a custom context to the expression provider
-     */
-    public function __construct(Context $context = null)
-    {
-        $policyConfiguration = GeneralUtility::makeInstance(PolicyConfigurationLoader::class)->getPolicyConfiguration();
-
-        $this->rootPolicy = GeneralUtility::makeInstance(PolicyFactory::class)->build($policyConfiguration);
-        $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
-        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcher::class);
+    public function __construct(
+        Context $context,
+        EventDispatcherInterface $eventDispatcher,
+        FrontendInterface $cache,
+        PolicyConfigurationLoader $policyConfigurationLoader,
+        PolicyFactory $policyFactory,
+        PolicyInformationPoint $policyInformationPoint
+    ) {
+        $this->rootPolicy = $policyFactory->build($policyConfigurationLoader->getPolicyConfiguration());
+        $this->context = $context;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->cache = $cache;
+        $this->policyInformationPoint = $policyInformationPoint;
     }
 
     /**
@@ -69,21 +77,13 @@ class PolicyDecisionPoint
      */
     public function authorize(array $attributes): PolicyDecision
     {
-        foreach ($attributes as $attribute) {
-            $this->eventDispatcher->dispatch(new AttributeRetrivalEvent($this->context, $attribute));
-        }
+        $attributes = $this->policyInformationPoint->obtain($attributes, $this->context);
 
         $policyExpressionResolver = GeneralUtility::makeInstance(Resolver::class, 'policy', $attributes);
 
         $decision = $this->rootPolicy->evaluate($policyExpressionResolver);
 
-        $this->eventDispatcher->dispatch(
-            new PolicyDecisionEvent(
-                $decision,
-                $this->context,
-                $attributes
-            )
-        );
+        $this->eventDispatcher->dispatch(new PolicyDecisionEvent($decision, $this->context, $attributes));
 
         return $decision;
     }

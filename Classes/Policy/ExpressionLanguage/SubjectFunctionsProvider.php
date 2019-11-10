@@ -41,14 +41,8 @@ class SubjectFunctionsProvider implements ExpressionFunctionProviderInterface
             function ($variables, ...$arguments) {
                 if (count($arguments) == 1) {
                     return count(array_filter($variables['subject']->principals, function ($principal) use ($arguments) {
-                        return $principal->type === $arguments[0];
+                        return $principal->identifier === $arguments[0];
                     })) > 0;
-                }
-
-                if (count($arguments) == 2) {
-                    return count(array_filter($variables['subject']->principals, function ($principal) use ($arguments) {
-                        return $principal->type === $arguments[0] && $principal->identifier === $arguments[1];
-                    })) === 1;
                 }
 
                 return false;

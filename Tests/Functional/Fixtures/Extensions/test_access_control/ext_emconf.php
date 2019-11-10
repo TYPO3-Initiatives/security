@@ -1,13 +1,15 @@
 <?php
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Security Example',
-    'description' => 'Security Example',
+    'title' => '',
+    'description' => '',
     'category' => 'example',
     'state' => 'test',
+    'version' => '10.2.0',
+    'clearCacheOnLoad' => 1,
     'constraints' => [
         'depends' => [
-            'typo3' => '10.0.0',
-            'security' => '10.0.0',
+            'typo3' => '10.2.0',
+            'security' => '10.2.0',
         ],
         'conflicts' => [],
         'suggests' => [],

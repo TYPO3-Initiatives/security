@@ -31,16 +31,16 @@ class PrincipalAttributeTest extends UnitTestCase
     {
         $subject = new PrincipalAttribute('bar');
 
-        $this->assertEquals('bar', $subject->identifier);
+        $this->assertEquals('cms:principal:bar', $subject->identifier);
     }
 
     /**
      * @test
      */
-    public function constructPropagatesType()
+    public function instanceProvidesClassIdentifier()
     {
         $subject = new PrincipalAttribute('qux');
 
-        $this->assertEquals(PrincipalAttribute::TYPE, $subject->type);
+        $this->assertEquals('cms:principal', $subject->class);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Backend\Security\Policy\ExpressionLanguage;
+namespace TYPO3\CMS\Security\Policy\ExpressionLanguage;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,19 +16,17 @@ namespace TYPO3\CMS\Backend\Security\Policy\ExpressionLanguage;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\ExpressionLanguage\AbstractProvider;
 
 /**
  * @internal
- * @todo Move into extension `backend`.
  */
-class ResourceProvider extends AbstractProvider
+class EnvironmentProvider extends AbstractProvider
 {
-    public function __construct(Context $context = null)
+    public function __construct()
     {
         $this->expressionLanguageProviders = [
-            ResourceFunctionsProvider::class,
-         ];
+            EnvironmentFunctionsProvider::class,
+        ];
     }
 }

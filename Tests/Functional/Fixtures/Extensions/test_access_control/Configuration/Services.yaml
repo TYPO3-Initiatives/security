@@ -1,0 +1,15 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Example\AccessControl\:
+    resource: '../Classes/*'
+
+  Example\AccessControl\Security\SubjectAttributeProvider:
+    tags:
+      -
+        name: event.listener
+        identifier: 'security-example-principal-provider'
+        event: TYPO3\CMS\Security\Event\SubjectRetrivalEvent

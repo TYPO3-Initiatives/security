@@ -1,7 +1,7 @@
 {
     "name": "typo3/cms-security",
     "type": "typo3-cms-framework",
-    "description": "The security library of TYPO3.",
+    "description": "The security framework of TYPO3.",
     "homepage": "https://typo3.org",
     "license": ["GPL-2.0-or-later"],
     "authors": [{
@@ -30,7 +30,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "10.0.x-dev"
+            "dev-master": "10.1.x-dev"
         },
         "typo3/cms": {
             "extension-key": "security",
@@ -43,8 +43,7 @@
     },
     "autoload": {
         "psr-4": {
-            "TYPO3\\CMS\\Backend\\Security\\": "Classes/Backend/Security",
-            "TYPO3\\CMS\\Security\\Build\\": "Build/",
+            "TYPO3\\CMS\\Security\\Build\\": "Build",
             "TYPO3\\CMS\\Security\\Attribute\\": "Classes/Attribute",
             "TYPO3\\CMS\\Security\\Event\\": "Classes/Event",
             "TYPO3\\CMS\\Security\\Policy\\": "Classes/Policy",
@@ -53,7 +52,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "TYPO3\\CMS\\Security\\Tests\\": "Tests/"
+            "TYPO3\\CMS\\Security\\Tests\\": "Tests",
+            "Example\\AccessControl\\": "Tests/Functional/Fixtures/Extensions/test_access_control/Classes"
         }
     },
     "minimum-stability": "dev",

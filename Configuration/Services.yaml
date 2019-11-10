@@ -3,56 +3,30 @@ services:
     autowire: true
     autoconfigure: true
     public: false
-  
-  cache.runtime:
-    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
-    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
-    arguments: ['runtime']
 
   cache.security:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
     arguments: ['security']
 
-  TYPO3\CMS\Security\Policy\:
-    resource: '../Classes/Policy/*'
+  TYPO3\CMS\Security\:
+    resource: '../Classes/*'
+
+  TYPO3\CMS\Security\Policy\PolicyDecisionPoint:
+    public: true
+    arguments:
+      - '@TYPO3\CMS\Core\Context\Context'
+      - '@TYPO3\CMS\Core\EventDispatcher\EventDispatcher'
+      - '@cache.runtime'
+      - '@TYPO3\CMS\Security\Policy\PolicyConfigurationLoader'
+      - '@TYPO3\CMS\Security\Policy\PolicyFactory'
+      - '@TYPO3\CMS\Security\Policy\PolicyInformationPoint'
 
   TYPO3\CMS\Security\Policy\PolicyConfigurationLoader:
-    public: true
     arguments:
-      $cache: '@cache.security'
+      - '@cache.security'
 
-  # @TODO: Move into extension `backend`.
-  cache.backend:
-    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
-    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
-    arguments: ['backend']
-
-  TYPO3\CMS\Backend\Security\:
-    resource: '../Classes/Backend/Security/*'
-
-  # @TODO: Move into extension `backend`.
-  TYPO3\CMS\Backend\Security\Principal\PrincipalAttributeProvider:
+  TYPO3\CMS\Security\Policy\PolicyInformationPoint:
     arguments:
-      $cache: '@cache.runtime'
-    tags:
-      -
-        name: event.listener
-        identifier: 'backend-principal-provider'
-        event: TYPO3\CMS\Security\Event\SubjectRetrivalEvent
-
-  # @TODO: Move into extension `backend`.
-  TYPO3\CMS\Backend\Security\Permission\PermissionAttributeProvider:
-    arguments:
-      $cache: '@cache.runtime'
-    tags:
-      -
-        name: event.listener
-        identifier: 'backend-resource-provider'
-        event: TYPO3\CMS\Security\Event\AttributeRetrivalEvent
-  
-  # @TODO: Move into extension `backend`.
-  TYPO3\CMS\Backend\Security\Permission\PermissionConfigurationLoader:
-    public: true
-    arguments:
-      $cache: '@cache.backend'
+      - '@TYPO3\CMS\Core\EventDispatcher\EventDispatcher'
+      - '@cache.runtime'

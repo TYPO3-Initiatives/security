@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Security\Tests\Functional\Policy;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Policy\ExpressionLanguage\Attribute\EntityResourceAttribute;
-use TYPO3\CMS\Core\Policy\ExpressionLanguage\Attribute\ReadActionAttribute;
+use Example\AccessControl\Security\Attribute\ActionAttribute;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Security\Attribute\ResourceAttribute;
 use TYPO3\CMS\Security\Policy\PolicyDecision;
 use TYPO3\CMS\Security\Policy\PolicyDecisionPoint;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -33,48 +33,45 @@ class PolicyDecisionPointTest extends FunctionalTestCase
      */
     protected $testExtensionsToLoad = [
         'typo3/sysext/security',
-        'typo3/sysext/security/Tests/Functional/Fixtures/Extensions/security_example',
+        'typo3/sysext/security/Tests/Functional/Fixtures/Extensions/test_access_control',
     ];
 
+    /**
+     * Sets up this test case.
+     */
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/Permission.csv');
     }
 
-    public function evaluateBackendUserRequestProvider()
+    public function evaluateRequestProvider()
     {
         return [
             [
-                1,
                 [
-                    'resource' => new EntityResourceAttribute('be_users'),
-                    'action' => new ReadActionAttribute(),
+                    'resource' => new ResourceAttribute('foo'),
+                    'action' => new ActionAttribute(),
                 ],
                 '',
                 PolicyDecision::PERMIT,
             ],
             [
-                3,
                 [
-                    'resource' => new EntityResourceAttribute('tt_content'),
-                    'action' => new ReadActionAttribute(),
+                    'resource' => new ResourceAttribute('bar'),
+                    'action' => new ActionAttribute(),
                 ],
                 '',
-                PolicyDecision::PERMIT,
+                PolicyDecision::DENY,
             ],
         ];
     }
 
     /**
      * @test
-     * @dataProvider evaluateBackendUserRequestProvider
+     * @dataProvider evaluateRequestProvider
      */
-    public function evaluateBackendUserRequest(int $backendUser, array $attributes, string $policy, int $decision)
+    public function evaluateRequest(array $attributes, string $policy, int $decision)
     {
-        $this->setUpBackendUserFromFixture($backendUser);
-
         $subject = GeneralUtility::makeInstance(PolicyDecisionPoint::class);
 
         $this->assertSame($decision, $subject->authorize($attributes, $policy)->getValue());

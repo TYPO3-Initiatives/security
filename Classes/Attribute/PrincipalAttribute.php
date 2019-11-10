@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Security\Attribute;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Security\Utility\AttributeUtility;
+
 /**
  * @api
  */
@@ -33,6 +35,7 @@ class PrincipalAttribute extends AbstractAttribute
      */
     public function __construct(string $identifier)
     {
-        $this->identifier = $identifier;
+        $this->identifier = $this->class . AttributeUtility::NAMESPACE_SEPARATOR
+        . AttributeUtility::translateClassNameToPolicyName($identifier);
     }
 }

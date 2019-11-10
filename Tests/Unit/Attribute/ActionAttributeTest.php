@@ -27,20 +27,14 @@ class ActionAttributeTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructPropagatesIdentifier()
+    public function instanceProvidesClassIdentifier()
     {
-        $subject = new ActionAttribute('foo');
+        $subject = $this->getMockForAbstractClass(
+            ActionAttribute::class, 
+            [], 
+            'ActionAttribute'
+        );
 
-        $this->assertEquals('foo', $subject->identifier);
-    }
-
-    /**
-     * @test
-     */
-    public function constructPropagatesType()
-    {
-        $subject = new ActionAttribute('bar');
-
-        $this->assertEquals(ActionAttribute::TYPE, $subject->type);
+        $this->assertEquals('action', $subject->class);
     }
 }

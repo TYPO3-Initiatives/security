@@ -129,8 +129,8 @@ To perform an access request the *policy decision point* has to be used. It eval
 <?php
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Policy\ExpressionLanguage\Attribute\EntityResourceAttribute;
-use TYPO3\CMS\Core\Policy\ExpressionLanguage\Attribute\ReadActionAttribute;
+use TYPO3\CMS\Security\Attribute\ResourceAttribute;
+use TYPO3\CMS\Security\Attribute\ReadActionAttribute;
 use TYPO3\CMS\Security\Policy\PolicyDecision;
 use TYPO3\CMS\Security\Policy\PolicyDecisionPoint;
 
@@ -138,10 +138,10 @@ $policyDecisionPoint = GeneralUtitlity::makeInstance(PolicyDecisionPoint::class)
 
 $policyDecision = $policyDecisionPoint->authorize(
   [
-    // resource to access
-    'resource' => new EntityResourceAttribute('be_users'),
-    // action on resource
-    'action' => new ReadActionAttribute()
+    // concrete resource to access
+    'resource' => new ResourceAttribute('identifier'),
+    // concrete action on resource
+    'action' => new ActionAttribute()
   ]
 );
 
@@ -164,11 +164,11 @@ To receive all operations which should be performed after denying or granting an
 
 ```yaml
 services:
-  Vendor\Example\EventListener\PolicyDecisionPoint:
+  Vendor\Example\EventListener\PolicyDecisionListener:
     tags:
       -
         name: event.listener
-        identifier: 'vendorPolicyDecisionListener'
+        identifier: 'vendor-policy-decision-listener'
         event: TYPO3\CMS\Security\Event\PolicyDecisionEvent
 ```
 
@@ -179,9 +179,37 @@ namespace Vendor\Example\EventListener;
 
 use TYPO3\CMS\Security\Event\PolicyDecisionEvent;
 
-class PolicyDecisionPoint
+class PolicyDecisionListener
 {
     public function __invoke(PolicyDecisionEvent $event)
+    {
+        // ...
+    }
+}
+```
+
+To provide additional data for an attribute before an access request the event `\TYPO3\CMS\Security\Event\AttributeRetrivalEvent` can be used:
+
+```yaml
+services:
+  Vendor\Example\EventListener\AttributeRetrivalListener:
+    tags:
+      -
+        name: event.listener
+        identifier: 'vendor-attribute-retrival-listener'
+        event: TYPO3\CMS\Security\Event\AttributeRetrivalEvent
+```
+
+```php
+<?php
+
+namespace Vendor\Example\EventListener;
+
+use TYPO3\CMS\Security\Event\AttributeRetrivalEvent;
+
+class PolicyDecisionPoint
+{
+    public function __invoke(AttributeRetrivalEvent $event)
     {
         // ...
     }
