@@ -129,10 +129,10 @@ To perform an access request the *policy decision point* has to be used. It eval
 <?php
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Security\Attribute\ResourceAttribute;
-use TYPO3\CMS\Security\Attribute\ReadActionAttribute;
-use TYPO3\CMS\Security\Policy\PolicyDecision;
-use TYPO3\CMS\Security\Policy\PolicyDecisionPoint;
+use TYPO3\CMS\Security\AccessControl\Attribute\ResourceAttribute;
+use TYPO3\CMS\Security\AccessControl\Attribute\ReadActionAttribute;
+use TYPO3\CMS\Security\AccessControl\Policy\PolicyDecision;
+use TYPO3\CMS\Security\AccessControl\Policy\PolicyDecisionPoint;
 
 $policyDecisionPoint = GeneralUtitlity::makeInstance(PolicyDecisionPoint::class);
 
@@ -160,7 +160,7 @@ if ($policyDecision->getValue() === PolicyDecision::PERMIT)
 // access is denied otherwise
 ```
 
-To receive all operations which should be performed after denying or granting an access request the event `\TYPO3\CMS\Security\Event\PolicyDecisionEvent` has to be used:
+To receive all operations which should be performed after denying or granting an access request the event `\TYPO3\CMS\Security\AccessControl\Event\PolicyDecisionEvent` has to be used:
 
 ```yaml
 services:
@@ -169,7 +169,7 @@ services:
       -
         name: event.listener
         identifier: 'vendor-policy-decision-listener'
-        event: TYPO3\CMS\Security\Event\PolicyDecisionEvent
+        event: TYPO3\CMS\Security\AccessControl\Event\PolicyDecisionEvent
 ```
 
 ```php
@@ -177,7 +177,7 @@ services:
 
 namespace Vendor\Example\EventListener;
 
-use TYPO3\CMS\Security\Event\PolicyDecisionEvent;
+use TYPO3\CMS\Security\AccessControl\Event\PolicyDecisionEvent;
 
 class PolicyDecisionListener
 {
@@ -188,7 +188,7 @@ class PolicyDecisionListener
 }
 ```
 
-To provide additional data for an attribute before an access request the event `\TYPO3\CMS\Security\Event\AttributeRetrivalEvent` can be used:
+To provide additional data for an attribute before an access request the event `\TYPO3\CMS\Security\AccessControl\Event\AttributeRetrivalEvent` can be used:
 
 ```yaml
 services:
@@ -197,7 +197,7 @@ services:
       -
         name: event.listener
         identifier: 'vendor-attribute-retrival-listener'
-        event: TYPO3\CMS\Security\Event\AttributeRetrivalEvent
+        event: TYPO3\CMS\Security\AccessControl\Event\AttributeRetrivalEvent
 ```
 
 ```php
@@ -205,7 +205,7 @@ services:
 
 namespace Vendor\Example\EventListener;
 
-use TYPO3\CMS\Security\Event\AttributeRetrivalEvent;
+use TYPO3\CMS\Security\AccessControl\Event\AttributeRetrivalEvent;
 
 class PolicyDecisionPoint
 {
