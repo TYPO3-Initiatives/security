@@ -79,7 +79,11 @@ class PolicyFactory
                 );
             }
 
-            if (!$policy instanceof AbstractPolicy || isset($configuration['rules']) && isset($configuration['policies'])) {
+            if (
+                !$policy instanceof AbstractPolicy
+                || isset($configuration['rules'])
+                && isset($configuration['policies'])
+            ) {
                 throw new InvalidArgumentException(
                     sprintf('Unexpected policy block "%s"', $configuration['id']),
                     1561758166

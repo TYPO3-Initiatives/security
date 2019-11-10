@@ -47,13 +47,14 @@ class PolicyInformationPoint
 
     public function obtain(array $attributes, Context $context): array
     {
-        $attributes = array_filter($attributes, static function($key) {
+        $attributes = array_filter($attributes, static function ($key) {
             return $key !== 'subject';
         }, ARRAY_FILTER_USE_KEY);
 
         $cacheIdentifier = sha1(static::class . '_subject_' . serialize($context));
+        $subjectAttribute = $this->cache->get($cacheIdentifier)
 
-        if (($subjectAttribute = $this->cache->get($cacheIdentifier)) === false) {
+        if ($subjectAttribute === false) {
             $subjectAttribute = new SubjectAttribute(uniqid());
             $subjectEvent = new SubjectRetrivalEvent($context, $subjectAttribute);
 

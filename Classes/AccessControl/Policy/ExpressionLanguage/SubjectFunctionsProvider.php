@@ -40,9 +40,11 @@ class SubjectFunctionsProvider implements ExpressionFunctionProviderInterface
             },
             function ($variables, ...$arguments) {
                 if (count($arguments) == 1) {
-                    return count(array_filter($variables['subject']->principals, function ($principal) use ($arguments) {
-                        return $principal->identifier === $arguments[0];
-                    })) > 0;
+                    return count(
+                        array_filter($variables['subject']->principals, function ($principal) use ($arguments) {
+                            return $principal->identifier === $arguments[0];
+                        })
+                    ) > 0;
                 }
 
                 return false;
