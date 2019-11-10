@@ -52,7 +52,7 @@ class PolicyInformationPoint
         }, ARRAY_FILTER_USE_KEY);
 
         $cacheIdentifier = sha1(static::class . '_subject_' . serialize($context));
-        $subjectAttribute = $this->cache->get($cacheIdentifier)
+        $subjectAttribute = $this->cache->get($cacheIdentifier);
 
         if ($subjectAttribute === false) {
             $subjectAttribute = new SubjectAttribute(uniqid());

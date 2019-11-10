@@ -27,11 +27,13 @@ class AttributeUtility
     {
         return strtolower(preg_replace(
             [
-                '/(^[^\\\\]+\\\\|\\\\AccessControl\\\\Attribute|Attribute$)/',
+                '/^TYPO3\\\\CMS\\\\Security\\\\AccessControl\\\\Attribute/',
+                '/(^[^\\\\]+\\\\|\\\\Security\\\\AccessControl\\\\Attribute|Attribute$)/',
                 '/\\\\/',
                 '/(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z:])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z0-9:])/',
             ],
             [
+                'TYPO3\CMS\Security',
                 '',
                 ':',
                 '-',
