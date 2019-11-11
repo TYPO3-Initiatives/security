@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Security\AccessControl\Event;
  */
 
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Security\AccessControl\Attribute\SubjectAttribute;
+use TYPO3\CMS\Security\AccessControl\Attribute\PrincipalAttribute;
 
 /**
  * @api
@@ -30,14 +30,14 @@ final class SubjectRetrivalEvent
     private $context;
 
     /**
-     * @var SubjectAttribute
+     * @var array
      */
-    private $subject;
+    private $principals;
 
-    public function __construct(Context $context, SubjectAttribute $subject)
+    public function __construct(Context $context)
     {
         $this->context = $context;
-        $this->subject = $subject;
+        $this->principals = [];
     }
 
     public function getContext(): Context
@@ -45,8 +45,13 @@ final class SubjectRetrivalEvent
         return $this->context;
     }
 
-    public function getSubject(): SubjectAttribute
+    public function addPrincipal(PrincipalAttribute $principal)
     {
-        return $this->subject;
+        $this->principals[] = $principal;
+    }
+
+    public function getPrincipals(): array
+    {
+        return $this->principals;
     }
 }

@@ -27,7 +27,7 @@ class ActionAttributeTest extends UnitTestCase
     /**
      * @test
      */
-    public function instanceProvidesClassIdentifier()
+    public function constructPropagatesNamespaceAsIdentifier()
     {
         $subject = $this->getMockForAbstractClass(
             ActionAttribute::class, 
@@ -35,6 +35,20 @@ class ActionAttributeTest extends UnitTestCase
             'ActionAttribute'
         );
 
-        $this->assertEquals('action', $subject->class);
+        $this->assertEquals($subject->namespace, $subject->identifier);
+    }
+
+    /**
+     * @test
+     */
+    public function constructPropagatesNamespaceAsName()
+    {
+        $subject = $this->getMockForAbstractClass(
+            ActionAttribute::class, 
+            [], 
+            'ActionAttribute'
+        );
+
+        $this->assertEquals($subject->namespace, $subject->name);
     }
 }

@@ -55,12 +55,11 @@ class PolicyInformationPoint
         $subjectAttribute = $this->cache->get($cacheIdentifier);
 
         if ($subjectAttribute === false) {
-            $subjectAttribute = new SubjectAttribute(uniqid());
-            $subjectEvent = new SubjectRetrivalEvent($context, $subjectAttribute);
+            $subjectEvent = new SubjectRetrivalEvent($context);
 
             $this->eventDispatcher->dispatch($subjectEvent);
 
-            $subjectAttribute = $subjectEvent->getSubject();
+            $subjectAttribute = new SubjectAttribute(...$subjectEvent->getPrincipals());
 
             $this->cache->set($cacheIdentifier, $subjectAttribute);
         }

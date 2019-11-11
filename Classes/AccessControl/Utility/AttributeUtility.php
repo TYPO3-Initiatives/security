@@ -23,7 +23,7 @@ class AttributeUtility
 {
     const NAMESPACE_SEPARATOR = ':';
 
-    public static function translateClassNameToPolicyName($name)
+    public static function translateIdentifier($name)
     {
         return strtolower(preg_replace(
             [

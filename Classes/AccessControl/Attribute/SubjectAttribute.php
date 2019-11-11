@@ -19,26 +19,24 @@ namespace TYPO3\CMS\Security\AccessControl\Attribute;
 /**
  * @api
  */
-final class SubjectAttribute extends AbstractAttribute
+final class SubjectAttribute extends QualifiedAttribute
 {
     /**
-     * @var string
+     * @inheritdoc
      */
-    public $identifier;
-
-    /**
-     * @var array
-     */
-    public $principals;
-
-    /**
-     * Creates a subject attribute.
-     *
-     * @param string $identifier Subject identifier
-     */
-    public function __construct(string $identifier)
+    public function __construct(PrincipalAttribute ...$principals)
     {
-        $this->identifier = $identifier;
-        $this->principals = [];
+        parent::__construct(uniqid());
+
+        $this->meta['principals'] = [];
+
+        foreach ($principals as $principal) {
+            $this->meta['principals'][$principal->getName()] = $principal;
+        }
+    }
+
+    public function getPrincipals()
+    {
+        return $this->meta['principals'];
     }
 }

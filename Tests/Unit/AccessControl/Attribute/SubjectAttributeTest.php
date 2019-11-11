@@ -28,20 +28,10 @@ class SubjectAttributeTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructPropagatesIdentifier()
+    public function constructPropagatesPrincipals()
     {
-        $subject = new SubjectAttribute('foo');
+        $subject = new SubjectAttribute(new PrincipalAttribute('foo'));
 
-        $this->assertEquals('foo', $subject->identifier);
-    }
-
-    /**
-     * @test
-     */
-    public function instanceProvidesClassIdentifier()
-    {
-        $subject = new SubjectAttribute('qux');
-
-        $this->assertEquals('cms:security:subject', $subject->class);
+        $this->assertEquals('foo', $subject->principals['cms:security:principal:foo']->getIdentifier());
     }
 }

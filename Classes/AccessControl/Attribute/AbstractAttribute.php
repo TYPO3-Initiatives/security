@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Security\AccessControl\Attribute;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Security\AccessControl\Utility\AttributeUtility;
-
 /**
  * @api
  */
@@ -26,35 +24,18 @@ abstract class AbstractAttribute
     /**
      * @var array
      */
-    private static $meta = [];
+    protected $meta = [];
 
     /**
-     * Returns attribute meta
-     *
      * @param string $name
      * @return mixed
      */
     public function __get($name)
     {
-        switch ($name) {
-            case 'classes':
-                if (!isset(self::$meta[$name][static::class])) {
-                    $classes = array_merge([static::class], class_parents(static::class));
-
-                    foreach ($classes as $class) {
-                        self::$meta[$name][static::class][] = AttributeUtility::translateClassNameToPolicyName($class);
-                    }
-                }
-
-                return self::$meta[$name][static::class];
-            case 'class':
-                if (!isset(self::$meta[$name][static::class])) {
-                    self::$meta[$name][static::class] = AttributeUtility::translateClassNameToPolicyName(static::class);
-                }
-
-                return self::$meta[$name][static::class];
-            default:
-                throw new \RuntimeException(sprintf('Unknown meta attribute "%s"', $name), 1572800990);
+        if (!isset($this->meta[$name])) {
+            throw new \RuntimeException(sprintf('Unknown property "%s"', $name), 1572800990);
         }
+
+        return $this->meta[$name];
     }
 }

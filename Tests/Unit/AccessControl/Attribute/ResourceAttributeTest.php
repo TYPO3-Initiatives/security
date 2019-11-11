@@ -31,16 +31,6 @@ class ResourceAttributeTest extends UnitTestCase
     {
         $subject = new ResourceAttribute('baz');
 
-        $this->assertEquals('cms:security:resource:baz', $subject->identifier);
-    }
-
-    /**
-     * @test
-     */
-    public function instanceProvidesClassIdentifier()
-    {
-        $subject = new ResourceAttribute('qux');
-
-        $this->assertEquals('cms:security:resource', $subject->class);
+        $this->assertEquals('baz', $subject->identifier);
     }
 }

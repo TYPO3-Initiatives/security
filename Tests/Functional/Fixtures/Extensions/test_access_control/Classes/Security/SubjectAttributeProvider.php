@@ -10,6 +10,6 @@ class SubjectAttributeProvider
 {
     public function __invoke(SubjectRetrivalEvent $event): void
     {
-        $event->getSubject()->principals[] = new PrincipalAttribute('foo');
+        $event->addPrincipal(new PrincipalAttribute('foo'));
     }
 }

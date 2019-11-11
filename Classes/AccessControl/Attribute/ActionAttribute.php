@@ -19,6 +19,16 @@ namespace TYPO3\CMS\Security\AccessControl\Attribute;
 /**
  * @api
  */
-abstract class ActionAttribute extends AbstractAttribute
+abstract class ActionAttribute extends QualifiedAttribute
 {
+    /**
+     * @inheritdoc
+     */
+    public function __construct()
+    {
+        parent::__construct('');
+
+        $this->meta['identifier'] = $this->meta['namespace'];
+        $this->meta['name'] = $this->meta['namespace'];
+    }
 }

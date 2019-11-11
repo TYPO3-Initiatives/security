@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace TYPO3\CMS\Security\AccessControl\Attribute;
 
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,13 +19,34 @@ namespace TYPO3\CMS\Security\AccessControl\Attribute;
 /**
  * @api
  */
-class ResourceAttribute extends QualifiedAttribute
+interface QualifiedAttributeInterface
 {
     /**
-     * @inheritdoc
+     * Gets the local name
+     *
+     * @return string
      */
-    public function __construct(string $identifier)
-    {
-        parent::__construct($identifier);
-    }
+    public function getIdentifier(): string;
+
+    /**
+     * Gets the qualified name
+     *
+     * @return string
+     */
+    public function getName(): string;
+
+
+    /**
+     * Gets the primary namespace
+     *
+     * @return string
+     */
+    public function getNamespace(): string;
+
+    /**
+     * Gets all namespaces
+     *
+     * @return string
+     */
+    public function getNamespaces(): array;
 }

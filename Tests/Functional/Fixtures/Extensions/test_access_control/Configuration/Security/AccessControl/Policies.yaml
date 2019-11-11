@@ -3,7 +3,7 @@ TYPO3:
     Policy:
       policies:
         Role:
-          target: 'hasAuthority("cms:security:principal:foo") and resource.identifier == "cms:security:resource:foo"'
+          target: 'hasAuthority("cms:security:principal:foo") and resource.name == "cms:security:resource:foo"'
           description: 'Role policy.'
           priority: 100
           rules:

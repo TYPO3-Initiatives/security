@@ -16,26 +16,17 @@ namespace TYPO3\CMS\Security\AccessControl\Attribute;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Security\AccessControl\Utility\AttributeUtility;
 
 /**
  * @api
  */
-class PrincipalAttribute extends AbstractAttribute
+class PrincipalAttribute extends QualifiedAttribute
 {
     /**
-     * @var string
-     */
-    public $identifier;
-
-    /**
-     * Creates a principal attribute.
-     *
-     * @param string $identifier Principal identifier
+     * @inheritdoc
      */
     public function __construct(string $identifier)
     {
-        $this->identifier = $this->class . AttributeUtility::NAMESPACE_SEPARATOR
-        . AttributeUtility::translateClassNameToPolicyName($identifier);
+        parent::__construct($identifier);
     }
 }
