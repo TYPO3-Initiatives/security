@@ -233,7 +233,8 @@ To provide additional data for an attribute before an access
 request the event :php:`\TYPO3\CMS\Security\AccessControl\Event\AttributeRetrivalEvent`
 can be used:
 
-```yaml
+.. code-block:: yaml
+
    services:
      Vendor\Example\EventListener\AttributeRetrivalListener:
       tags:
@@ -241,9 +242,10 @@ can be used:
           name: event.listener
           identifier: 'vendor-attribute-retrival-listener'
           event: TYPO3\CMS\Security\AccessControl\Event\AttributeRetrivalEvent
-```
 
-```php
+
+.. code-block:: php
+
    <?php
 
    namespace Vendor\Example\EventListener;
