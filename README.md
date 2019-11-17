@@ -150,7 +150,7 @@ if (!$policyDecision->isApplicable()) {
 }
 
 // process determining policy rule
-$determinigRule = $policyDecisin->getRule();
+$determinigRule = $policyDecision->getRule();
 
 foreach ($policyDecision->getObligations() as $obligation) {
   // process obligations
