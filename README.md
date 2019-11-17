@@ -49,7 +49,7 @@ The [expression language](https://docs.typo3.org/c/typo3/cms-core/master/en-us/C
 
 ### Configuration
 
-Policies are part of extension configurations and have to be defined with YAML (`Configuration/Security/Policies.yaml`). The root policy is in `TYPO3.CMS.Policy`. All policies are merged together in the topological sort of the extension depdency graph. Thus it is always possible to override existing policies.
+Policies are part of extension configurations and have to be defined with YAML (`Configuration/Security/AccessControl/Policies.yaml`). The root policy is in `TYPO3.CMS.Policy`. All policies are merged together in the topological sort of the extension depdency graph. Thus it is always possible to override existing policies.
 
 As shown in the following example, an administrator is allowed to do anything, but all others are not allowed to do anything:
 
