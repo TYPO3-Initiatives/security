@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Security\AccessControl\Policy;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Security\AccessControl\Policy\PolicyObligation;
 use Webmozart\Assert\Assert;
 
 /**
@@ -45,16 +44,22 @@ class PolicyDecision
     private $value;
 
     /**
-     * @var PolicyObligation[]
+     * @var PolicyRule
+     */
+    private $rule;
+
+    /**
+     * @var array
      */
     private $obligations;
 
-    public function __construct(int $value, PolicyObligation ...$obligations)
+    public function __construct(int $value, PolicyRule $rule = null, PolicyObligation ...$obligations)
     {
         Assert::oneOf($value, [self::DENY, self::NOT_APPLICABLE, self::PERMIT]);
         Assert::true(empty($obligations) || $value !== self::NOT_APPLICABLE);
 
         $this->value = $value;
+        $this->rule = $rule;
         $this->obligations = $obligations;
     }
 
@@ -68,31 +73,25 @@ class PolicyDecision
         return $this->value;
     }
 
-    /**
-     * @var PolicyObligation[]
-     */
+    public function getRule(): ?PolicyRule
+    {
+        return $this->rule;
+    }
+
     public function getObligations(): array
     {
         return $this->obligations;
-    }
-
-    public function add(PolicyObligation ...$obligations): self
-    {
-        Assert::notEq($this->value, self::NOT_APPLICABLE);
-
-        return new self(
-            $this->value,
-            ...array_merge($this->obligations, $obligations)
-        );
     }
 
     public function merge(self $decision): self
     {
         Assert::notEq($this->value, self::NOT_APPLICABLE);
         Assert::eq($this->value, $decision->getValue());
+        Assert::oneOf($this->rule, [$decision->getRule(), null]);
 
         return new self(
             $this->value,
+            $this->rule ?? $decision->getRule(),
             ...array_merge($this->obligations, $decision->getObligations())
         );
     }

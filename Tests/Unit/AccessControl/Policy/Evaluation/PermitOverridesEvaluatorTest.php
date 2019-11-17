@@ -63,6 +63,7 @@ class PermitOverridesEvaluatorTest extends AbstractEvaluatorTest
             [
                 new PolicyDecision(
                     PolicyDecision::PERMIT,
+                    null,
                     ...[
                         new PolicyObligation('bar'),
                         new PolicyObligation('qux'),
@@ -79,6 +80,7 @@ class PermitOverridesEvaluatorTest extends AbstractEvaluatorTest
             [
                 new PolicyDecision(
                     PolicyDecision::DENY,
+                    null,
                     ...[
                         new PolicyObligation('bar'),
                         new PolicyObligation('baz'),
@@ -95,6 +97,7 @@ class PermitOverridesEvaluatorTest extends AbstractEvaluatorTest
             [
                 new PolicyDecision(
                     PolicyDecision::PERMIT,
+                    null,
                     ...[
                         new PolicyObligation('foo'),
                         new PolicyObligation('bar'),

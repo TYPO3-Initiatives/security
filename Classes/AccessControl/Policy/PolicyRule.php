@@ -115,7 +115,7 @@ final class PolicyRule implements EvaluableInterface
         $decision = $this->effect === self::EFFECT_PERMIT ? PolicyDecision::PERMIT : PolicyDecision::DENY;
         $obligations = $decision === PolicyDecision::PERMIT ? $this->permitObligations : $this->denyObligations;
 
-        return new PolicyDecision($decision, ...$obligations);
+        return new PolicyDecision($decision, $this, ...$obligations);
     }
 
     public function getId(): string

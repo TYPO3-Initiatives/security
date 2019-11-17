@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Security\Tests\Unit\AccessControl\Policy;
 
 use InvalidArgumentException;
 use TYPO3\CMS\Security\AccessControl\Policy\PolicyDecision;
+use TYPO3\CMS\Security\AccessControl\Policy\PolicyRule;
 use TYPO3\CMS\Security\AccessControl\Policy\PolicyObligation;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -33,7 +34,7 @@ class PolicyDecisionTest extends UnitTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        new PolicyDecision(PolicyDecision::NOT_APPLICABLE, new PolicyObligation('foo'));
+        new PolicyDecision(PolicyDecision::NOT_APPLICABLE, null, new PolicyObligation('foo'));
     }
 
     /**
@@ -43,7 +44,7 @@ class PolicyDecisionTest extends UnitTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        new PolicyDecision(3, new PolicyObligation('foo'));
+        new PolicyDecision(3, null, new PolicyObligation('foo'));
     }
 
     /**
@@ -76,6 +77,34 @@ class PolicyDecisionTest extends UnitTestCase
     /**
      * @test
      */
+    public function getRuleReturnsNullIfSetOnConstruct()
+    {
+        $subject = new PolicyDecision(PolicyDecision::PERMIT, null);
+        $this->assertEquals(null, $subject->getRule());
+    }
+
+    /**
+     * @test
+     */
+    public function getRuleReturnsNullIfNothingSetOnConstruct()
+    {
+        $subject = new PolicyDecision(PolicyDecision::DENY);
+        $this->assertEquals(null, $subject->getRule());
+    }
+
+    /**
+     * @test
+     */
+    public function getRuleReturnsGivenOnConstruct()
+    {
+        $expected = new PolicyRule('foo');
+        $subject = new PolicyDecision(PolicyDecision::NOT_APPLICABLE, $expected);
+        $this->assertSame($expected, $subject->getRule());
+    }
+
+    /**
+     * @test
+     */
     public function getObligationsReturnsEmptyArrayIfNoneGivenOnConstruct()
     {
         $subject = new PolicyDecision(PolicyDecision::PERMIT);
@@ -87,7 +116,7 @@ class PolicyDecisionTest extends UnitTestCase
      */
     public function getObligationsReturnsGivenOnConstruct()
     {
-        $subject = new PolicyDecision(PolicyDecision::PERMIT, new PolicyObligation('bar'), new PolicyObligation('baz'));
+        $subject = new PolicyDecision(PolicyDecision::PERMIT, null, new PolicyObligation('bar'), new PolicyObligation('baz'));
         $this->assertEquals([new PolicyObligation('bar'), new PolicyObligation('baz')], $subject->getObligations());
     }
 
@@ -121,36 +150,6 @@ class PolicyDecisionTest extends UnitTestCase
     /**
      * @test
      */
-    public function addCreatesNewInstance()
-    {
-        $subject = new PolicyDecision(PolicyDecision::PERMIT);
-        $this->assertNotSame($subject, $subject->add(new PolicyObligation('foo')));
-    }
-
-    /**
-     * @test
-     */
-    public function addCreatesNewInstanceWithAllObligations()
-    {
-        $subject = new PolicyDecision(PolicyDecision::DENY, new PolicyObligation('bar'));
-        $expected = new PolicyDecision(PolicyDecision::DENY, new PolicyObligation('bar'), new PolicyObligation('foo'));
-        $this->assertEquals($expected, $subject->add(new PolicyObligation('foo')));
-    }
-
-    /**
-     * @test
-     */
-    public function addThrowsWhenUsedOnNonApplicableDecision()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $subject = new PolicyDecision(PolicyDecision::NOT_APPLICABLE);
-        $subject->add(new PolicyObligation('foo'));
-    }
-
-    /**
-     * @test
-     */
     public function mergeCreatesNewInstance()
     {
         $subject = new PolicyDecision(PolicyDecision::DENY);
@@ -162,9 +161,9 @@ class PolicyDecisionTest extends UnitTestCase
      */
     public function mergeCreatesNewInstanceWithAllObligations()
     {
-        $subject = new PolicyDecision(PolicyDecision::PERMIT, new PolicyObligation('bar'));
-        $expected = new PolicyDecision(PolicyDecision::PERMIT, new PolicyObligation('bar'), new PolicyObligation('foo'));
-        $this->assertEquals($expected, $subject->merge(new PolicyDecision(PolicyDecision::PERMIT, new PolicyObligation('foo'))));
+        $subject = new PolicyDecision(PolicyDecision::PERMIT, null, new PolicyObligation('bar'));
+        $expected = new PolicyDecision(PolicyDecision::PERMIT, null, new PolicyObligation('bar'), new PolicyObligation('foo'));
+        $this->assertEquals($expected, $subject->merge(new PolicyDecision(PolicyDecision::PERMIT, null, new PolicyObligation('foo'))));
     }
 
     /**

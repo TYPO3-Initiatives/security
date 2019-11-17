@@ -68,11 +68,14 @@ final class PolicySet extends AbstractPolicy
             return $decision;
         }
 
-        if ($decision->getValue() === PolicyDecision::PERMIT) {
-            return $decision->add(...$this->permitObligations);
-        }
-
-        return $decision->add(...$this->denyObligations);
+        return $decision->merge(
+            new PolicyDecision(
+                $decision->getValue(),
+                $decision->getRule(),
+                ...$decision->getValue() === PolicyDecision::PERMIT 
+                    ? $this->permitObligations : $this->denyObligations
+            )
+        );
     }
 
     public function getIterator()

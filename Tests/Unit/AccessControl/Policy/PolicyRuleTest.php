@@ -197,7 +197,7 @@ class PolicyRuleTest extends UnitTestCase
     public function evaluateReturnsApplicableDecisionWhenTargetAndConditionIsNull()
     {
         $subject = new PolicyRule('foo', null, null, PolicyRule::EFFECT_DENY);
-        $expected = new PolicyDecision(PolicyDecision::DENY);
+        $expected = new PolicyDecision(PolicyDecision::DENY, $subject);
 
         $this->assertEquals($expected, $subject->evaluate($this->resolverStub));
     }
@@ -219,7 +219,7 @@ class PolicyRuleTest extends UnitTestCase
     public function evaluateReturnsApplicableDecisionWhenTargetEvaluatesToTrueAndConditionIsNotSet()
     {
         $subject = new PolicyRule('baz', 'true', null, PolicyRule::EFFECT_PERMIT);
-        $expected = new PolicyDecision(PolicyDecision::PERMIT);
+        $expected = new PolicyDecision(PolicyDecision::PERMIT, $subject);
 
         $this->assertEquals($expected, $subject->evaluate($this->resolverStub));
     }
@@ -230,7 +230,7 @@ class PolicyRuleTest extends UnitTestCase
     public function evaluateReturnsApplicableDecisionWhenTargetAndConditionEvaluatesToTrue()
     {
         $subject = new PolicyRule('foo', 'true', 'true', PolicyRule::EFFECT_DENY);
-        $expected = new PolicyDecision(PolicyDecision::DENY);
+        $expected = new PolicyDecision(PolicyDecision::DENY, $subject);
 
         $this->assertEquals($expected, $subject->evaluate($this->resolverStub));
     }
@@ -241,7 +241,7 @@ class PolicyRuleTest extends UnitTestCase
     public function evaluateReturnsDenyDecisionIfApplicableAndEffectIsNotSetOnConstruct()
     {
         $subject = new PolicyRule('qux');
-        $expected = new PolicyDecision(PolicyDecision::DENY);
+        $expected = new PolicyDecision(PolicyDecision::DENY, $subject);
 
         $this->assertEquals($expected, $subject->evaluate($this->resolverStub));
     }
@@ -260,7 +260,7 @@ class PolicyRuleTest extends UnitTestCase
             [new PolicyObligation('foo')],
             [new PolicyObligation('baz'), new PolicyObligation('bar')]
         );
-        $expected = new PolicyDecision(PolicyDecision::PERMIT, new PolicyObligation('baz'), new PolicyObligation('bar'));
+        $expected = new PolicyDecision(PolicyDecision::PERMIT, $subject, new PolicyObligation('baz'), new PolicyObligation('bar'));
 
         $this->assertEquals($expected, $subject->evaluate($this->resolverStub));
     }
@@ -279,7 +279,7 @@ class PolicyRuleTest extends UnitTestCase
             [new PolicyObligation('foo'), new PolicyObligation('qux')],
             [new PolicyObligation('baz')]
         );
-        $expected = new PolicyDecision(PolicyDecision::DENY, new PolicyObligation('foo'), new PolicyObligation('qux'));
+        $expected = new PolicyDecision(PolicyDecision::DENY, $subject, new PolicyObligation('foo'), new PolicyObligation('qux'));
 
         $this->assertEquals($expected, $subject->evaluate($this->resolverStub));
     }

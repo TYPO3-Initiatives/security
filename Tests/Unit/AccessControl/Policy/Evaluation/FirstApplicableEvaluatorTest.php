@@ -63,6 +63,7 @@ class FirstApplicableEvaluatorTest extends AbstractEvaluatorTest
             [
                 new PolicyDecision(
                     PolicyDecision::DENY,
+                    null,
                     ...[
                         new PolicyObligation('baz'),
                         new PolicyObligation('bar'),
@@ -79,6 +80,7 @@ class FirstApplicableEvaluatorTest extends AbstractEvaluatorTest
             [
                 new PolicyDecision(
                     PolicyDecision::DENY,
+                    null,
                     ...[
                         new PolicyObligation('bar'),
                     ]
@@ -93,6 +95,7 @@ class FirstApplicableEvaluatorTest extends AbstractEvaluatorTest
             [
                 new PolicyDecision(
                     PolicyDecision::PERMIT,
+                    null,
                     ...[
                         new PolicyObligation('foo'),
                         new PolicyObligation('bar'),

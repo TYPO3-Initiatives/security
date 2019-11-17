@@ -34,6 +34,7 @@ abstract class AbstractEvaluatorTest extends UnitTestCase
             $stub->evaluate(Argument::any())->willReturn(
                 new PolicyDecision(
                     $data[0],
+                    null,
                     ...array_map(function ($data) {
                         return new PolicyObligation($data[0]);
                     }, $data[1] ?? [])

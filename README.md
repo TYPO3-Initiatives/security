@@ -149,6 +149,9 @@ if (!$policyDecision->isApplicable()) {
   // access request is not applicable
 }
 
+// process determining policy rule
+$determinigRule = $policyDecisin->getRule();
+
 foreach ($policyDecision->getObligations() as $obligation) {
   // process obligations
 }

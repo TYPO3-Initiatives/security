@@ -589,7 +589,7 @@ class PolicyTest extends UnitTestCase
 
         $evaluatorProphecy = $this->prophesize(EvaluatorInterface::class);
         $evaluatorProphecy->process($this->resolverStub, ...$rules)->willReturn(
-            new PolicyDecision(PolicyDecision::DENY, new PolicyObligation('qux'), new PolicyObligation('bar'))
+            new PolicyDecision(PolicyDecision::DENY, null, new PolicyObligation('qux'), new PolicyObligation('bar'))
         );
         $evaluatorMock = $evaluatorProphecy->reveal();
 
@@ -607,6 +607,7 @@ class PolicyTest extends UnitTestCase
         $this->assertEquals(
             new PolicyDecision(
                 PolicyDecision::DENY,
+                null,
                 new PolicyObligation('qux'),
                 new PolicyObligation('bar'),
                 new PolicyObligation('baz'),
@@ -628,7 +629,7 @@ class PolicyTest extends UnitTestCase
 
         $evaluatorProphecy = $this->prophesize(EvaluatorInterface::class);
         $evaluatorProphecy->process($this->resolverStub, ...$rules)->willReturn(
-            new PolicyDecision(PolicyDecision::PERMIT, new PolicyObligation('foo'), new PolicyObligation('bar'))
+            new PolicyDecision(PolicyDecision::PERMIT, null, new PolicyObligation('foo'), new PolicyObligation('bar'))
         );
         $evaluatorMock = $evaluatorProphecy->reveal();
 
@@ -646,10 +647,45 @@ class PolicyTest extends UnitTestCase
         $this->assertEquals(
             new PolicyDecision(
                 PolicyDecision::PERMIT,
+                null,
                 new PolicyObligation('foo'),
                 new PolicyObligation('bar'),
                 new PolicyObligation('foo'),
                 new PolicyObligation('baz')
+            ),
+            $subject->evaluate($this->resolverStub)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function evaluateReturnsDeterminingRule()
+    {
+        $rules = [
+            new PolicyRule('foo'),
+            new PolicyRule('qux'),
+        ];
+
+        $evaluatorProphecy = $this->prophesize(EvaluatorInterface::class);
+        $evaluatorProphecy->process($this->resolverStub, ...$rules)->willReturn(
+            new PolicyDecision(PolicyDecision::PERMIT, $rules[0])
+        );
+        $evaluatorMock = $evaluatorProphecy->reveal();
+
+        $subject = new Policy(
+            'qux',
+            $rules,
+            $evaluatorMock,
+            null,
+            null,
+            null
+        );
+
+        $this->assertEquals(
+            new PolicyDecision(
+                PolicyDecision::PERMIT,
+                $rules[0]
             ),
             $subject->evaluate($this->resolverStub)
         );
