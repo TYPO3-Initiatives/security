@@ -17,16 +17,16 @@ namespace TYPO3\CMS\Security\Tests\Functional\AccessControl\Policy;
  */
 
 use Example\AccessControl\Security\Attribute\ActionAttribute;
+use TYPO3\AccessControl\Attribute\ResourceAttribute;
+use TYPO3\AccessControl\Policy\PolicyDecision;
+use TYPO3\AccessControl\Policy\PolicyDecisionPoint;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Security\AccessControl\Attribute\ResourceAttribute;
-use TYPO3\CMS\Security\AccessControl\Policy\PolicyDecision;
-use TYPO3\CMS\Security\AccessControl\Policy\PolicyDecisionPoint;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case
  */
-class PolicyDecisionPointTest extends FunctionalTestCase
+class AuthorisationTest extends FunctionalTestCase
 {
     /**
      * @var array

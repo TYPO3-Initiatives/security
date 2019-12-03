@@ -9,24 +9,28 @@ services:
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
     arguments: ['security']
 
-  TYPO3\CMS\Security\:
-    resource: '../Classes/*'
-
-  TYPO3\CMS\Security\AccessControl\Policy\PolicyDecisionPoint:
-    public: true
-    arguments:
-      - '@TYPO3\CMS\Core\Context\Context'
-      - '@TYPO3\CMS\Core\EventDispatcher\EventDispatcher'
-      - '@cache.runtime'
-      - '@TYPO3\CMS\Security\AccessControl\Policy\PolicyConfigurationLoader'
-      - '@TYPO3\CMS\Security\AccessControl\Policy\PolicyFactory'
-      - '@TYPO3\CMS\Security\AccessControl\Policy\PolicyInformationPoint'
-
-  TYPO3\CMS\Security\AccessControl\Policy\PolicyConfigurationLoader:
+  policy.access:
+    class: TYPO3\AccessControl\Policy\AbstractPolicy
+    factory: ['@TYPO3\CMS\Security\AccessControl\Policy\PolicyManager', 'getPolicy']
     arguments:
       - '@cache.security'
 
-  TYPO3\CMS\Security\AccessControl\Policy\PolicyInformationPoint:
+  TYPO3\CMS\Security\:
+    resource: '../Classes/*'
+
+  TYPO3\CMS\Security\AccessControl\Policy\PolicyManager:
+    arguments:
+      - '@cache.security'
+
+  TYPO3\AccessControl\Policy\PolicyInformationPoint:
+    public: true
     arguments:
       - '@TYPO3\CMS\Core\EventDispatcher\EventDispatcher'
-      - '@cache.runtime'
+
+  TYPO3\AccessControl\Policy\PolicyDecisionPoint:
+    public: true
+    arguments:
+      - '@TYPO3\CMS\Core\EventDispatcher\EventDispatcher'
+      - '@policy.access'
+      - '@TYPO3\AccessControl\Policy\PolicyInformationPoint'
+      - '@TYPO3\CMS\Security\AccessControl\Attribute\AttributeContext'

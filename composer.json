@@ -14,8 +14,8 @@
         "sort-packages": true
     },
     "require": {
-        "typo3/cms-core": "10.*@dev",
-        "webmozart/assert": "^1.0"
+        "typo3/access-control": "^0.1",
+        "typo3/cms-core": "10.*@dev"
     },
     "require-dev": {
         "typo3/testing-framework": "^5.0",
@@ -62,11 +62,7 @@
         "test:php:unit": [
             "@php .build/bin/phpunit -c Build/UnitTests.xml"
         ],
-        "test:php:functional": [
-            "@php .build/bin/phpunit -c Build/FunctionalTests.xml"
-        ],
         "test": [
-            "@test:php:unit",
             "@test:php:functional"
         ]
     }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Security\AccessControl\Policy\ExpressionLanguage;
+namespace TYPO3\CMS\Security\AccessControl\Policy;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -22,7 +22,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 /**
  * @internal
  */
-class SubjectFunctionsProvider implements ExpressionFunctionProviderInterface
+class ExpressionFunctionsProvider implements ExpressionFunctionProviderInterface
 {
     public function getFunctions()
     {

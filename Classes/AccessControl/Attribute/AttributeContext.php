@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Security\AccessControl\Event;
+namespace TYPO3\CMS\Security\AccessControl\Attribute;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -16,42 +16,51 @@ namespace TYPO3\CMS\Security\AccessControl\Event;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\AccessControl\Attribute\AttributeContextInterface;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Security\AccessControl\Attribute\PrincipalAttribute;
 
 /**
  * @api
  */
-final class SubjectRetrivalEvent
+class AttributeContext implements AttributeContextInterface
 {
     /**
      * @var Context
      */
     private $context;
 
-    /**
-     * @var array
-     */
-    private $principals;
-
     public function __construct(Context $context)
     {
         $this->context = $context;
-        $this->principals = [];
     }
 
-    public function getContext(): Context
+    /**
+     * @inheritdoc
+     */
+    public function getEntry(string $key): ?object
     {
-        return $this->context;
+        if ($key === Context::class) {
+            return $this->context;
+        }
+
+        return null;
     }
 
-    public function addPrincipal(PrincipalAttribute $principal)
+    /**
+     * @inheritdoc
+     */
+    public function hasEntry(string $key): bool
     {
-        $this->principals[] = $principal;
+        return $key === Context::class;
     }
 
-    public function getPrincipals(): array
+    /**
+     * @inheritdoc
+     */
+    public function getKeys(): array
     {
-        return $this->principals;
+        return [
+            Context::class
+        ];
     }
 }

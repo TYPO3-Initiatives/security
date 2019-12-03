@@ -1,8 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Security\AccessControl\Attribute;
-
+namespace TYPO3\CMS\Security\AccessControl\Policy;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,16 +16,23 @@ namespace TYPO3\CMS\Security\AccessControl\Attribute;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\ExpressionLanguage\AbstractProvider;
+
 /**
- * @api
+ * @internal
  */
-class ResourceAttribute extends QualifiedAttribute
+class ExpressionProvider extends AbstractProvider
 {
-    /**
-     * @inheritdoc
-     */
-    public function __construct(string $identifier)
+    public function __construct()
     {
-        parent::__construct($identifier);
+        $this->expressionLanguageVariables = [
+            'subject' => null,
+            'resource' => null,
+            'action' => null
+        ];
+
+        $this->expressionLanguageProviders = [
+            ExpressionFunctionsProvider::class,
+        ];
     }
 }
