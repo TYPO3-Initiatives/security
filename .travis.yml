@@ -38,10 +38,6 @@ script:
     find . -name \*.php ! -path "./.build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
   - >
     echo;
-    echo "Running unit tests";
-    .build/bin/phpunit -c Build/UnitTests.xml Tests/Unit/ --coverage-clover .build/coverage.xml;
-  - >
-    echo;
     echo "Running functional tests";
     .build/bin/phpunit -c Build/FunctionalTests.xml Tests/Functional/
 
