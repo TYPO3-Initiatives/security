@@ -1,5 +1,9 @@
 # Security
 
+[![Build](https://img.shields.io/travis/com/TYPO3-Initiatives/security/master.svg)](https://travis-ci.com/TYPO3-Initiatives/security)
+[![Coverage](https://img.shields.io/codacy/coverage/a3ba86a8a97846e9a8bca68975f22c66/master.svg)](https://app.codacy.com/project/TYPO3-Initiatives/security/dashboard)
+[![Code Quality](https://img.shields.io/codacy/grade/a3ba86a8a97846e9a8bca68975f22c66/master.svg)](https://app.codacy.com/project/TYPO3-Initiatives/security/dashboard)
+
 This extension provides basic security features for TYPO3 CMS.
 
 *This implementation is a proof-of-concept prototype and thus experimental development. Since not all planned features are implemented, this extension should not be used for production sites.*
